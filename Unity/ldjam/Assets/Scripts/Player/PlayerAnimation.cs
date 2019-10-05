@@ -17,6 +17,7 @@ public class PlayerAnimation : MonoBehaviour {
         this.runningAni = "Idle_Right";
         sGameEventManager.Access().OnInput += doCheck;
         sGameEventManager.Access().OnLanding += playLanding;
+        sGameEventManager.Access().AfterLanding += doCheck;
     }
 
     private void FixedUpdate() {
