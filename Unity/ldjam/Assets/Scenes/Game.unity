@@ -130,7 +130,7 @@ PrefabInstance:
     - target: {fileID: 3620349751963304751, guid: 027cafbc48c1be746acf4fe907859cca,
         type: 3}
       propertyPath: m_Name
-      value: CameraMovement
+      value: CameraFeature
       objectReference: {fileID: 0}
     - target: {fileID: 3620349751963304745, guid: 027cafbc48c1be746acf4fe907859cca,
         type: 3}
@@ -238,6 +238,8 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -253,6 +255,23 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88a1d7ed14cc8f142888e88c6bd8fdac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  border: 7
+  accelerationStep: 1
+  maxAcceleration: 20
+  borderWidth: 2
+  verticalOffset: 3
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -310,6 +329,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &519420033
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &549606440
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,6 +694,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialAlpha: 0
+--- !u!114 &1501090845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501090841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a3da30590b829249915dfb58ac12047, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: Camera Follow
+  description: The camera now follows, smooooooth.
+  code: camera.follow(player);
+  destroyAfterCollect: 1
 --- !u!4 &1659288831 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3653442692541079338, guid: d028f668f19cc2548991589cfeabfce1,
@@ -776,6 +832,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GoLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 3620349751963304751, guid: 027cafbc48c1be746acf4fe907859cca,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 3620349751963304745, guid: 027cafbc48c1be746acf4fe907859cca,
         type: 3}

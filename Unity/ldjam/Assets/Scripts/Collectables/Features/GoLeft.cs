@@ -8,7 +8,7 @@ public class GoLeft : ACollectable {
 
 
     private void Start() {
-        this.player = GameObject.FindGameObjectWithTag("Player");
+        sGameEventManager.Access().OnLanding += findPlayer;
     }
 
 
@@ -19,6 +19,10 @@ public class GoLeft : ACollectable {
 
     protected override void undoEffect() {
         this.player.GetComponent<PlayerMovement>().SetCanWalkLeft(false);
+    }
+
+    protected void findPlayer() {
+        this.player = GameObject.FindGameObjectWithTag("Player");
     }
 
 }
