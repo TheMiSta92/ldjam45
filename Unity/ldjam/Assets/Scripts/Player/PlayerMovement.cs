@@ -10,12 +10,12 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] [Range(10f, 50f)] private float accelerationGain;
     [SerializeField] [Range(1f, 50f)] private float maxAcceleration;
-    private float accelerationNow=0f;
+    private float accelerationNow = 0f;
     [SerializeField] [Range(20f, 100f)] private float maxVelocity;
     [SerializeField] [Range(0.1f, 0.8f)] private float controllerDeadZone;
     private Rigidbody2D body;
-    [SerializeField] private bool jumpAvailable=true;
-    [SerializeField][Range(200f,2000f)] private float jumpHeight=500f;
+    [SerializeField] private bool jumpAvailable = true;
+    [SerializeField] [Range(200f, 2000f)] private float jumpHeight = 500f;
     private float moveX = 0f;
     // Start is called before the first frame update
     void Start()
@@ -27,18 +27,20 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         bool movingBefore = false;
-        if (Math.Abs(moveX) > controllerDeadZone) {
+        if (Math.Abs(moveX) > controllerDeadZone)
+        {
             movingBefore = true;
         }
         moveX = Input.GetAxisRaw("Horizontal");
-        if (Math.Abs(moveX) > controllerDeadZone && !movingBefore) {
+        if (Math.Abs(moveX) > controllerDeadZone && !movingBefore)
+        {
             sGameEventManager.Access().Trigger_Input();
         }
     }
 
     private void FixedUpdate()
     {
-        if (moveX < -controllerDeadZone||moveX>controllerDeadZone)
+        if (moveX < -controllerDeadZone || moveX > controllerDeadZone)
         {
             if (accelerationNow + accelerationGain < maxAcceleration)
             {
@@ -54,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                body.velocity = new Vector2(maxVelocity*moveX*Time.fixedDeltaTime, body.velocity.y);
+                body.velocity = new Vector2(maxVelocity * moveX * Time.fixedDeltaTime, body.velocity.y);
             }
 
             accelerationNow = accelerationNow - accelerationGain;
@@ -74,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer==25)
+        if (collision.gameObject.layer == 25)
         {
             sGameEventManager.Access().Trigger_Landing();
             jumpAvailable = true;
@@ -85,8 +87,10 @@ public class PlayerMovement : MonoBehaviour
     /// Is the player actively walking (incl. user input)
     /// </summary>
     /// <returns>0 ... no, -1 ... to the left, +1 ... to the right</returns>
-    public int IsWalking() {
-        if (Math.Abs(this.moveX) > this.controllerDeadZone) {
+    public int IsWalking()
+    {
+        if (Math.Abs(this.moveX) > this.controllerDeadZone)
+        {
             if (this.moveX > 0f) return 1;
             return -1;
         }
@@ -97,8 +101,10 @@ public class PlayerMovement : MonoBehaviour
     /// Is the player sliding (no user input, but moving)
     /// </summary>
     /// <returns>0 ... no, -1 ... to the left, +1 ... to the right</returns>
-    public int IsSliding() {
-        if (this.IsWalking() == 0 && Math.Abs(this.GetHorizontalSpeed()) > 0f) {
+    public int IsSliding()
+    {
+        if (this.IsWalking() == 0 && Math.Abs(this.GetHorizontalSpeed()) > 0f)
+        {
             if (this.GetHorizontalSpeed() > 0f) return 1;
             return -1;
         }
@@ -109,7 +115,8 @@ public class PlayerMovement : MonoBehaviour
     /// Is the player airborn?
     /// </summary>
     /// <returns>True if jump is not available</returns>
-    public bool IsAirborne() {
+    public bool IsAirborne()
+    {
         return !this.jumpAvailable;
     }
 
@@ -117,7 +124,8 @@ public class PlayerMovement : MonoBehaviour
     /// Is the player falling?
     /// </summary>
     /// <returns>True if airborne and negative velocity in y</returns>
-    public bool IsFalling() {
+    public bool IsFalling()
+    {
         return this.IsAirborne() && this.GetVerticalSpeed() < 0f;
     }
 
@@ -125,7 +133,8 @@ public class PlayerMovement : MonoBehaviour
     /// Returns the horizontal speed of the player
     /// </summary>
     /// <returns>Horizontal speed</returns>
-    public float GetHorizontalSpeed() {
+    public float GetHorizontalSpeed()
+    {
         return body.velocity.x;
     }
 
@@ -133,8 +142,19 @@ public class PlayerMovement : MonoBehaviour
     /// Returns the vertical speed of the player
     /// </summary>
     /// <returns>Vertical speed</returns>
-    public float GetVerticalSpeed() {
+    public float GetVerticalSpeed()
+    {
         return body.velocity.y;
     }
 
+    public float GetCurrentAcceleration()
+    {
+        return accelerationNow;
+    }
+
+
+
 }
+
+
+
