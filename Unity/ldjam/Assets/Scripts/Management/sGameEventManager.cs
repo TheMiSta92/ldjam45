@@ -29,6 +29,11 @@ public class sGameEventManager : MonoBehaviour {
         this.OnCollected?.Invoke(collected);
         this.AfterCollected?.Invoke(collected);
     }
+
+    public event Action OnInput;
+    public void Trigger_Input() {
+        this.OnInput?.Invoke();
+    }
     /**
      * // Events
      **/
@@ -42,5 +47,6 @@ public class sGameEventManagerEditor : Editor {
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
         EditorGUILayout.HelpBox("OnCollected" + Environment.NewLine + "AfterCollected", MessageType.Info);
+        EditorGUILayout.HelpBox("OnInput", MessageType.Info);
     }
 }
