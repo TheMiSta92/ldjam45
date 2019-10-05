@@ -55,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.layer==25)
         {
+            sGameEventManager.Access().Trigger_Landing();
             jumpAvailable = true;
         }
     }
@@ -76,8 +77,8 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     /// <returns>0 ... no, -1 ... to the left, +1 ... to the right</returns>
     public int IsSliding() {
-        if (this.IsWalking() == 0 && Math.Abs(body.velocity.x) > 0f) {
-            if (body.velocity.x > 0f) return 1;
+        if (this.IsWalking() == 0 && Math.Abs(this.GetHorizontalSpeed()) > 0f) {
+            if (this.GetHorizontalSpeed() > 0f) return 1;
             return -1;
         }
         return 0;
@@ -91,8 +92,28 @@ public class PlayerMovement : MonoBehaviour
         return !this.jumpAvailable;
     }
 
+    /// <summary>
+    /// Is the player falling?
+    /// </summary>
+    /// <returns>True if airborne and negative velocity in y</returns>
+    public bool IsFalling() {
+        return this.IsAirborne() && this.GetVerticalSpeed() < 0f;
+    }
+
+    /// <summary>
+    /// Returns the horizontal speed of the player
+    /// </summary>
+    /// <returns>Horizontal speed</returns>
     public float GetHorizontalSpeed() {
         return body.velocity.x;
+    }
+
+    /// <summary>
+    /// Returns the vertical speed of the player
+    /// </summary>
+    /// <returns>Vertical speed</returns>
+    public float GetVerticalSpeed() {
+        return body.velocity.y;
     }
 
 }

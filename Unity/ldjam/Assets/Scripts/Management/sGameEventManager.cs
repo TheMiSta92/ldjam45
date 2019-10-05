@@ -34,6 +34,13 @@ public class sGameEventManager : MonoBehaviour {
     public void Trigger_Input() {
         this.OnInput?.Invoke();
     }
+
+    public event Action OnLanding;
+    public event Action AfterLanding;
+    public void Trigger_Landing() {
+        this.OnLanding?.Invoke();
+        this.AfterLanding?.Invoke();
+    }
     /**
      * // Events
      **/
@@ -48,5 +55,6 @@ public class sGameEventManagerEditor : Editor {
         base.OnInspectorGUI();
         EditorGUILayout.HelpBox("OnCollected" + Environment.NewLine + "AfterCollected", MessageType.Info);
         EditorGUILayout.HelpBox("OnInput", MessageType.Info);
+        EditorGUILayout.HelpBox("OnLanding" + Environment.NewLine + "AfterLanding", MessageType.Info);
     }
 }
