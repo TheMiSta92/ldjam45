@@ -43,9 +43,9 @@ public class PlayerMovement : MonoBehaviour
         {
             if (jumpAvailable)
             {
-                sGameEventManager.Access().Trigger_Input();
                 body.AddForce(new Vector2(0, jumpHeight));
                 jumpAvailable = false;
+                sGameEventManager.Access().Trigger_Input();
             }
         }
 

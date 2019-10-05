@@ -18,7 +18,7 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        if (Math.Abs(this.pm.GetHorizontalSpeed()) <= .0005f && this.pm.IsWalking() == 0) {
+        if (Math.Abs(this.pm.GetHorizontalSpeed()) <= .0005f && this.pm.IsWalking() == 0 && !this.pm.IsAirborne()) {
             if (this.runningAni.EndsWith("_Left")) {
                 this.animator.Play("Idle_Left");
                 this.runningAni = "Idle_Left";
@@ -32,9 +32,16 @@ public class PlayerAnimation : MonoBehaviour {
 
 
     protected void doCheck() {
-        //if (this.pm.IsAirborne()) {
-        //    this.animator.Play("Jump");
-        //}
+        if (this.pm.IsAirborne()) {
+            if (this.pm.GetHorizontalSpeed() > 0f) {
+                this.animator.Play("Jump_Right");
+                this.runningAni = "Jump_Right";
+            } else {
+                this.animator.Play("Jump_Left");
+                this.runningAni = "Jump_Left";
+            }
+            return;
+        }
 
         if (this.pm.IsWalking() == 1) {
             this.animator.Play("Walk_Right");
