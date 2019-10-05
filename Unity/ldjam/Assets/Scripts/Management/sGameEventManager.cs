@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,9 +23,9 @@ public class sGameEventManager : MonoBehaviour {
     /**
      * Events
      **/
-    public event Action<ICollectable> OnCollected;
-    public event Action<ICollectable> AfterCollected;
-    public void Trigger_Collected(ICollectable collected) {
+    public event Action<ACollectable> OnCollected;
+    public event Action<ACollectable> AfterCollected;
+    public void Trigger_Collected(ACollectable collected) {
         this.OnCollected?.Invoke(collected);
         this.AfterCollected?.Invoke(collected);
     }
