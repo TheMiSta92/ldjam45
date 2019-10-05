@@ -166,8 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0dd515162257440b989d01f2b94361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
-  controllerDeadZone: 0
+  accelerationGain: 20
+  maxAcceleration: 10
+  maxVelocity: 49.2
+  controllerDeadZone: 0.252
   jumpAvailable: 1
   jumpHeight: 500
 --- !u!114 &3137919570128114865

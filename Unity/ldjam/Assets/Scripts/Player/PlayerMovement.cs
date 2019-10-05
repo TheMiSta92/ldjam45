@@ -8,7 +8,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] [Range(100f, 1000f)] private float speed;
+    [SerializeField] [Range(10f, 50f)] private float accelerationGain;
+    [SerializeField] [Range(1f, 50f)] private float maxAcceleration;
+    private float accelerationNow=0f;
+    [SerializeField] [Range(20f, 100f)] private float maxVelocity;
     [SerializeField] [Range(0.1f, 0.8f)] private float controllerDeadZone;
     private Rigidbody2D body;
     [SerializeField] private bool jumpAvailable=true;
@@ -37,7 +40,25 @@ public class PlayerMovement : MonoBehaviour
     {
         if (moveX < -controllerDeadZone||moveX>controllerDeadZone)
         {
-            body.velocity = new Vector2(transform.right.x * moveX * speed * Time.fixedDeltaTime,body.velocity.y);
+            if (accelerationNow + accelerationGain < maxAcceleration)
+            {
+                accelerationNow = accelerationNow + accelerationGain;
+            }
+            else
+            {
+                accelerationNow = maxAcceleration;
+            }
+            if (body.velocity.x + accelerationNow < maxVelocity)
+            {
+                body.velocity = new Vector2(body.velocity.x + accelerationNow * Time.fixedDeltaTime * moveX, body.velocity.y);
+            }
+            else
+            {
+                body.velocity = new Vector2(maxVelocity*moveX*Time.fixedDeltaTime, body.velocity.y);
+            }
+
+            accelerationNow = accelerationNow - accelerationGain;
+
         }
         if (Input.GetButton("Jump"))
         {
