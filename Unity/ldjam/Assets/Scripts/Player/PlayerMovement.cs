@@ -116,4 +116,9 @@ public class PlayerMovement : MonoBehaviour
         return body.velocity.x;
     }
 
+    public float GetCurrentAcceleration()
+    {
+        return accelerationNow;
+    }
+
 }
