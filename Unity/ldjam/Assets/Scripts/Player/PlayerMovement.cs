@@ -6,25 +6,35 @@ using UnityEngine;
 //Class for player movement
 [AddComponentMenu("LDJAM/Player/Movement")]
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerMovement : MonoBehaviour
-{
+public class PlayerMovement : MonoBehaviour {
     [SerializeField] private Transform spawnPoint;
+    [Header("Speed")]
     [SerializeField] [Range(10f, 50f)] private float accelerationGain;
     [SerializeField] [Range(1f, 50f)] private float maxAcceleration;
     private float accelerationNow = 0f;
     [SerializeField] [Range(20f, 100f)] private float maxVelocity;
     [SerializeField] [Range(0.1f, 0.8f)] private float controllerDeadZone;
     private Rigidbody2D body;
-    
-    private bool jumpAvailable=true;
+
+    private bool jumpAvailable = true;
+    [Header("Features")]
     [SerializeField] private bool canJump = false;
+    [SerializeField] private bool canDuck = false;
     [SerializeField] private bool canWalkLeft = false;
-    [SerializeField][Range(200f,2000f)] private float jumpHeight=500f;
+    [SerializeField] [Range(200f, 2000f)] private float jumpHeight = 500f;
+    [SerializeField] [Range(.1f, .95f)] private float lowestDuck = .5f;
+    [SerializeField] [Range(.1f, 1f)] private float timeForDuckAnimation = 1f;
+    private float passedDuckAnimationTime = 0f;
+    private bool shouldDuck = false;
     private float moveX = 0f;
+
+    private Transform playerT;
+
     // Start is called before the first frame update
     void Start()
     {
         body = this.gameObject.GetComponent<Rigidbody2D>();
+        this.playerT = this.gameObject.transform;
         sGameEventManager.Access().OnDeath += Respawn;
     }
 
@@ -32,11 +42,34 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         this.moveX = Input.GetAxisRaw("Horizontal");
+        if (this.canDuck && !this.shouldDuck && !this.IsAirborne() && Input.GetAxisRaw("Vertical") < -controllerDeadZone) {
+            this.passedDuckAnimationTime = 0f;
+            this.shouldDuck = true;
+        } else if (this.shouldDuck && this.playerT.localScale.y < 1f && Input.GetAxisRaw("Vertical") > -controllerDeadZone) {
+            this.shouldDuck = false;
+        }
         if (!this.canWalkLeft && this.moveX < 0f) {
             this.moveX = 0f;
         }
-        if (Math.Abs(moveX) > controllerDeadZone) {
+        if (Math.Abs(moveX) > controllerDeadZone || this.shouldDuck) {
             sGameEventManager.Access().Trigger_Input();
+        }
+        if (this.shouldDuck && this.playerT.localScale.y > this.lowestDuck) {
+            this.passedDuckAnimationTime += Time.deltaTime;
+            float scaleY = 1f - (1f - this.lowestDuck) * this.passedDuckAnimationTime / this.timeForDuckAnimation;
+            if (scaleY < this.lowestDuck) {
+                scaleY = this.lowestDuck;
+                this.passedDuckAnimationTime = 0f;
+            }
+            this.playerT.localScale = new Vector3(1f, scaleY, 1f);
+        } else if (!this.shouldDuck && this.playerT.localScale.y < 1f) {
+            this.passedDuckAnimationTime += Time.deltaTime;
+            float scaleY = this.lowestDuck + (1f - this.lowestDuck) * this.passedDuckAnimationTime / this.timeForDuckAnimation;
+            if (scaleY > 1f) {
+                scaleY = 1f;
+                this.passedDuckAnimationTime = 0f;
+            }
+            this.playerT.localScale = new Vector3(1f, scaleY, 1f);
         }
     }
 
@@ -71,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetButton("Jump"))
         {
-            if (jumpAvailable && this.canJump)
+            if (jumpAvailable && this.canJump && !this.shouldDuck)
             {
                 body.AddForce(new Vector2(0, jumpHeight));
                 jumpAvailable = false;
@@ -167,6 +200,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetCanJump(bool able = true) {
         this.canJump = able;
+    }
+
+    public void SetCanDuck(bool able = true) {
+        this.canDuck = able;
     }
 
 }
