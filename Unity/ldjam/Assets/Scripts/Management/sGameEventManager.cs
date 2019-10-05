@@ -30,6 +30,11 @@ public class sGameEventManager : MonoBehaviour {
         this.AfterCollected?.Invoke(collected);
     }
 
+    public event Action OnDeath;
+    public void Trigger_Death() {
+        this.OnDeath?.Invoke();
+    }
+
     public event Action OnInput;
     public void Trigger_Input() {
         this.OnInput?.Invoke();
@@ -54,6 +59,7 @@ public class sGameEventManagerEditor : Editor {
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
         EditorGUILayout.HelpBox("OnCollected" + Environment.NewLine + "AfterCollected", MessageType.Info);
+        EditorGUILayout.HelpBox("OnDeath", MessageType.Info);
         EditorGUILayout.HelpBox("OnInput", MessageType.Info);
         EditorGUILayout.HelpBox("OnLanding" + Environment.NewLine + "AfterLanding", MessageType.Info);
     }

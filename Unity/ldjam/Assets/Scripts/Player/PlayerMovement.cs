@@ -8,39 +8,44 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private Transform spawnPoint;
     [SerializeField] [Range(10f, 50f)] private float accelerationGain;
     [SerializeField] [Range(1f, 50f)] private float maxAcceleration;
     private float accelerationNow = 0f;
     [SerializeField] [Range(20f, 100f)] private float maxVelocity;
     [SerializeField] [Range(0.1f, 0.8f)] private float controllerDeadZone;
     private Rigidbody2D body;
-    [SerializeField] private bool jumpAvailable = true;
-    [SerializeField] [Range(200f, 2000f)] private float jumpHeight = 500f;
+    [SerializeField] private bool jumpAvailable=true;
+    [SerializeField] private bool canWalkLeft = false;
+    [SerializeField][Range(200f,2000f)] private float jumpHeight=500f;
     private float moveX = 0f;
     // Start is called before the first frame update
     void Start()
     {
         body = this.gameObject.GetComponent<Rigidbody2D>();
+        sGameEventManager.Access().OnDeath += Respawn;
     }
 
     // Update is called once per frame
     void Update()
     {
-        bool movingBefore = false;
-        if (Math.Abs(moveX) > controllerDeadZone)
-        {
-            movingBefore = true;
+        this.moveX = Input.GetAxisRaw("Horizontal");
+        if (!this.canWalkLeft && this.moveX < 0f) {
+            this.moveX = 0f;
         }
-        moveX = Input.GetAxisRaw("Horizontal");
-        if (Math.Abs(moveX) > controllerDeadZone && !movingBefore)
-        {
+        if (Math.Abs(moveX) > controllerDeadZone) {
             sGameEventManager.Access().Trigger_Input();
         }
     }
 
     private void FixedUpdate()
     {
-        if (moveX < -controllerDeadZone || moveX > controllerDeadZone)
+        // check fell down
+        if (this.gameObject.transform.position.y < -8f) {
+            sGameEventManager.Access().Trigger_Death();
+        }
+
+        if (moveX < -controllerDeadZone||moveX>controllerDeadZone)
         {
             if (accelerationNow + accelerationGain < maxAcceleration)
             {
@@ -147,14 +152,16 @@ public class PlayerMovement : MonoBehaviour
         return body.velocity.y;
     }
 
-    public float GetCurrentAcceleration()
-    {
-        return accelerationNow;
+    public void Respawn() {
+        this.gameObject.transform.position = this.spawnPoint.transform.position;
+        this.gameObject.transform.rotation = this.spawnPoint.transform.rotation;
+        body.velocity = Vector2.zero;
+        body.angularVelocity = 0f;
     }
 
-
+    public void SetCanWalkLeft(bool able = true) {
+        this.canWalkLeft = able;
+    }
 
 }
-
-
-
+}
