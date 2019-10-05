@@ -15,7 +15,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] [Range(20f, 100f)] private float maxVelocity;
     [SerializeField] [Range(0.1f, 0.8f)] private float controllerDeadZone;
     private Rigidbody2D body;
-    [SerializeField] private bool jumpAvailable=true;
+    
+    private bool jumpAvailable=true;
+    [SerializeField] private bool canJump = false;
     [SerializeField] private bool canWalkLeft = false;
     [SerializeField][Range(200f,2000f)] private float jumpHeight=500f;
     private float moveX = 0f;
@@ -69,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetButton("Jump"))
         {
-            if (jumpAvailable)
+            if (jumpAvailable && this.canJump)
             {
                 body.AddForce(new Vector2(0, jumpHeight));
                 jumpAvailable = false;
@@ -161,6 +163,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetCanWalkLeft(bool able = true) {
         this.canWalkLeft = able;
+    }
+
+    public void SetCanJump(bool able = true) {
+        this.canJump = able;
     }
 
 }
