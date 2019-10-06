@@ -8,6 +8,7 @@ public class PlayerAnimation : MonoBehaviour {
     protected Animator animator;
     protected PlayerMovement pm;
     protected string runningAni;
+    protected bool doChecks = true;
 
 
     private void Start() {
@@ -15,9 +16,13 @@ public class PlayerAnimation : MonoBehaviour {
         this.pm = this.gameObject.GetComponent<PlayerMovement>();
         this.runningAni = "Idle_Right";
         sGameEventManager.Access().OnInput += doCheck;
+        sGameEventManager.Access().OnLanding += playLanding;
+        sGameEventManager.Access().AfterLanding += doCheck;
     }
 
     private void FixedUpdate() {
+        if (!this.doChecks) return;
+
         if (Math.Abs(this.pm.GetHorizontalSpeed()) <= .0005f && this.pm.IsWalking() == 0 && !this.pm.IsAirborne()) {
             if (this.runningAni.EndsWith("_Left")) {
                 this.animator.Play("Idle_Left");
@@ -32,7 +37,9 @@ public class PlayerAnimation : MonoBehaviour {
 
 
     protected void doCheck() {
-        if (this.pm.IsAirborne()) {
+        if (!this.doChecks) return;
+
+        if (this.pm.IsAirborne() && !this.runningAni.StartsWith("Jump_")) {
             if (this.pm.GetHorizontalSpeed() > 0f) {
                 this.animator.Play("Jump_Right");
                 this.runningAni = "Jump_Right";
@@ -42,6 +49,8 @@ public class PlayerAnimation : MonoBehaviour {
             }
             return;
         }
+
+        if (this.pm.IsAirborne()) return;
 
         if (this.pm.IsWalking() == 1) {
             this.animator.Play("Walk_Right");
@@ -66,6 +75,17 @@ public class PlayerAnimation : MonoBehaviour {
             this.runningAni = "Idle_Left";
             return;
         }
+    }
+
+    protected void playLanding() {
+        this.doChecks = false;
+        this.animator.Play("Landing");
+        this.runningAni = "Landing";
+        Invoke("startCheckingAgain", 10f / 30f);
+    }
+
+    protected void startCheckingAgain() {
+        this.doChecks = true;
     }
 
 }
