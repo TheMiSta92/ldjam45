@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour {
             {
                 accelerationNow = maxAcceleration;
             }
-            if (body.velocity.x + accelerationNow < maxVelocity)
+            if (getBody().velocity.x + accelerationNow < maxVelocity)
             {
                 body.velocity = new Vector2(body.velocity.x + accelerationNow * Time.fixedDeltaTime * moveX, body.velocity.y);
             }
@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             if (jumpAvailable && this.canJump && !this.shouldDuck)
             {
-                body.AddForce(new Vector2(0, jumpHeight));
+                getBody().AddForce(new Vector2(0, jumpHeight));
                 jumpAvailable = false;
                 sGameEventManager.Access().Trigger_Input();
             }
@@ -201,7 +201,7 @@ public class PlayerMovement : MonoBehaviour {
     /// <returns>Horizontal speed</returns>
     public float GetHorizontalSpeed()
     {
-        return body.velocity.x;
+        return getBody().velocity.x;
     }
 
     /// <summary>
@@ -210,14 +210,14 @@ public class PlayerMovement : MonoBehaviour {
     /// <returns>Vertical speed</returns>
     public float GetVerticalSpeed()
     {
-        return body.velocity.y;
+        return getBody().velocity.y;
     }
 
     public void Respawn() {
         this.gameObject.transform.position = this.spawnPoint.transform.position;
         this.gameObject.transform.rotation = this.spawnPoint.transform.rotation;
-        body.velocity = Vector2.zero;
-        body.angularVelocity = 0f;
+        getBody().velocity = Vector2.zero;
+        getBody().angularVelocity = 0f;
     }
 
     public void SetCanWalkLeft(bool able = true) {
@@ -230,6 +230,12 @@ public class PlayerMovement : MonoBehaviour {
 
     public void SetCanDuck(bool able = true) {
         this.canDuck = able;
+    }
+
+
+    protected Rigidbody2D getBody() {
+        if (this.body == null) this.body = this.gameObject.GetComponent<Rigidbody2D>();
+        return this.body;
     }
 
 }

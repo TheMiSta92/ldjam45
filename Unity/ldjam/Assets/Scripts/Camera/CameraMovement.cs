@@ -126,4 +126,8 @@ public class CameraMovement : MonoBehaviour
         this.doFollowY = follow;
     }
 
+    public void SearchAgainForPlayer() {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
 }

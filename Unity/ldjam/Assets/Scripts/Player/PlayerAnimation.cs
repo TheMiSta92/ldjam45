@@ -25,11 +25,9 @@ public class PlayerAnimation : MonoBehaviour {
 
         if (Math.Abs(this.pm.GetHorizontalSpeed()) <= .0005f && this.pm.IsWalking() == 0 && !this.pm.IsAirborne()) {
             if (this.runningAni.EndsWith("_Left")) {
-                this.animator.Play("Idle_Left");
-                this.runningAni = "Idle_Left";
+                this.PlayAnimation("Idle_Left");
             } else {
-                this.animator.Play("Idle_Right");
-                this.runningAni = "Idle_Right";
+                this.PlayAnimation("Idle_Right");
             }
         }
     }
@@ -41,11 +39,9 @@ public class PlayerAnimation : MonoBehaviour {
 
         if (this.pm.IsAirborne() && !this.runningAni.StartsWith("Jump_") && !this.pm.IsDucking()) {
             if (this.pm.GetHorizontalSpeed() > 0f) {
-                this.animator.Play("Jump_Right");
-                this.runningAni = "Jump_Right";
+                this.PlayAnimation("Jump_Right");
             } else {
-                this.animator.Play("Jump_Left");
-                this.runningAni = "Jump_Left";
+                this.PlayAnimation("Jump_Left");
             }
             return;
         }
@@ -53,41 +49,47 @@ public class PlayerAnimation : MonoBehaviour {
         if (this.pm.IsAirborne()) return;
 
         if (this.pm.IsWalking() == 1) {
-            this.animator.Play("Walk_Right");
-            this.runningAni = "Walk_Right";
+            this.PlayAnimation("Walk_Right");
             return;
         }
 
         if (this.pm.IsWalking() == -1) {
-            this.animator.Play("Walk_Left");
-            this.runningAni = "Walk_Left";
+            this.PlayAnimation("Walk_Left");
             return;
         }
 
         if (this.pm.IsSliding() == 1) {
-            this.animator.Play("Idle_Right");
-            this.runningAni = "Idle_Right";
+            this.PlayAnimation("Idle_Right");
             return;
         }
 
         if (this.pm.IsSliding() == -1) {
-            this.animator.Play("Idle_Left");
-            this.runningAni = "Idle_Left";
+            this.PlayAnimation("Idle_Left");
             return;
         }
     }
 
     protected void playLanding() {
         if (!this.pm.IsDucking()) {
-            this.animator.Play("Landing");
-            this.runningAni = "Landing";
+            this.PlayAnimation("Landing");
         }
         this.doChecks = false;
-        Invoke("startCheckingAgain", 10f / 30f);
+        Invoke("StartCheckingAgain", 10f / 30f);
     }
 
-    protected void startCheckingAgain() {
+    public void StartCheckingAgain() {
         this.doChecks = true;
+    }
+
+    public void StopChecking() {
+        this.doChecks = false;
+    }
+
+    public void PlayAnimation(string name) {
+        if (this.gameObject.activeSelf) {
+            this.animator.Play(name);
+            this.runningAni = name;
+        }
     }
 
 }

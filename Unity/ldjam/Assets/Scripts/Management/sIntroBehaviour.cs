@@ -42,8 +42,8 @@ public class sIntroBehaviour : MonoBehaviour {
 
     public void StartFakeAnimation() {
         this.showPlayer(false);
-        sConsoleTextWriter.Access().SetNormalDelay(Time.deltaTime);
-        sConsoleTextWriter.Access().SetDeviation(Time.deltaTime);
+        sConsoleTextWriter.Access().SetNormalDelay(Time.fixedDeltaTime);
+        sConsoleTextWriter.Access().SetDeviation(Time.fixedDeltaTime);
         sConsoleTextWriter.Access().ShowText("Log(\"Hello World!\");");
         this.doFakeAnimation = true;
     }
