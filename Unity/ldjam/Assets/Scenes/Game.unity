@@ -8544,6 +8544,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48f59fe7948bc594480cff9b57df1045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color_stage1: {r: 1, g: 0, b: 0, a: 1}
+  color_stage2: {r: 1, g: 0, b: 0, a: 1}
   style: 0
   normalDelay: 0.0429
   deviation: 0.0437

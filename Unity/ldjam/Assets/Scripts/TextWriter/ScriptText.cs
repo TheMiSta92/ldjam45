@@ -23,6 +23,7 @@ public class ScriptText : MonoBehaviour
                 newGo.transform.parent = script;
                 newGo.transform.localPosition = new Vector3(0f, offsetY, 0f);
                 newGo.GetComponent<TextMesh>().text = test.GetFilename();
+                if(newGo.transform.parent.gameObject.name=="GoLeft"|| newGo.transform.parent.gameObject.name == "CameraFeature")
                 newGo.AddComponent<TextVisualFader>();
             }
         }
