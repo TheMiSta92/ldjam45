@@ -4,7 +4,6 @@
 public abstract class ACollectable : MonoBehaviour {
 
     [SerializeField] private string title = "Untitled Collectable";
-    [SerializeField] private string filename = "Untitled.cs";
     [SerializeField] [TextArea] private string description = "This is a collectable without a description.";
     [SerializeField] private string code = "throw new System.NotImplementedException();";
     [SerializeField] private bool destroyAfterCollect = true;
@@ -17,10 +16,6 @@ public abstract class ACollectable : MonoBehaviour {
         if (!collider.isTrigger) throw new System.Exception("Collectable Component of GO " + this.gameObject.name + " has a collider which is not a trigger!");
     }
 
-    private void Start() {
-        sGameEventManager.Access().OnCollected += refreshConsoleUI;
-    }
-
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Player")) {
             this.applyEffect();
@@ -29,17 +24,10 @@ public abstract class ACollectable : MonoBehaviour {
         }
     }
 
-    protected void refreshConsoleUI(ACollectable coll) {
-        sConsoleTextWriter.Access().ResetSpeed();
-        sConsoleTextWriter.Access().ShowText(coll.GetCode());
-    }
-
 
 
     public string GetTitle() { return this.title; }
-    public string GetFilename() { return this.filename; }
     public string GetDescription() { return this.description; }
-    public string GetCode() { return this.code; }
 
 
 

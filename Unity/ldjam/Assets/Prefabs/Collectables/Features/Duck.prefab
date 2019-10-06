@@ -121,7 +121,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: Ducks
-  filename: Duck.cs
-  description: Ducks everywhere, oooooh, that kind of duck.
-  code: player.learnDifference("Ducking", "Duck");
+  description: Ducks everywhere, oooooh, that kind of duck
+  code: player.learnDiff("Ducking", "Duck");
   destroyAfterCollect: 1

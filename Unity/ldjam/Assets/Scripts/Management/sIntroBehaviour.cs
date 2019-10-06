@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [AddComponentMenu("LDJAM/Management/Intro Behaviour")]
 public class sIntroBehaviour : MonoBehaviour {
@@ -42,9 +41,6 @@ public class sIntroBehaviour : MonoBehaviour {
 
     public void StartFakeAnimation() {
         this.showPlayer(false);
-        sConsoleTextWriter.Access().SetNormalDelay(Time.deltaTime);
-        sConsoleTextWriter.Access().SetDeviation(Time.deltaTime);
-        sConsoleTextWriter.Access().ShowText("Log(\"Hello World!\");");
         this.doFakeAnimation = true;
     }
 
@@ -56,8 +52,6 @@ public class sIntroBehaviour : MonoBehaviour {
                 this.doFakeAnimation = false;
                 Destroy(this.fakeAnimator);
                 this.showPlayer();
-                sConsoleTextWriter.Access().ResetSpeed();
-                sConsoleTextWriter.Access().ShowText("player.Spawn();");
                 Invoke("showFirstFeature", 1.2f);
             }
         }
