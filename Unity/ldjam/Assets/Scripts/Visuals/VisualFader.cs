@@ -19,10 +19,7 @@ public class VisualFader : MonoBehaviour {
 
 
     private void Start() {
-        this.sr = this.gameObject.GetComponent<SpriteRenderer>();
-        this.sr.material.EnableKeyword("_ALPHABLEND_ON");   // change shader-mode to "Fade"
-        this.currentAlpha = this.initialAlpha;
-        this.setAlpha(this.currentAlpha);
+        this.searchForSpriteRenderer();
     }
 
     private void Update() {
@@ -31,7 +28,7 @@ public class VisualFader : MonoBehaviour {
             float timeLeft = this.targetTime - this.currentTime;
             this.setAlpha(this.currentAlpha + this.changeAlphaLeft / timeLeft);
             this.changeAlphaLeft = this.targetAlpha - this.currentAlpha;
-            if (this.changeAlphaLeft < .01f) {
+            if (Mathf.Abs(this.changeAlphaLeft) < .01f) {
                 this.setAlpha(this.targetAlpha);
                 this.doFade = false;
             }
@@ -40,7 +37,15 @@ public class VisualFader : MonoBehaviour {
 
 
 
+    protected void searchForSpriteRenderer() {
+        this.sr = this.gameObject.GetComponent<SpriteRenderer>();
+        this.sr.material.EnableKeyword("_ALPHABLEND_ON");   // change shader-mode to "Fade"
+        this.currentAlpha = this.initialAlpha;
+        this.setAlpha(this.currentAlpha);
+    }
+
     protected void setAlpha(float a) {
+        if (this.sr == null) this.searchForSpriteRenderer();
         Color c = this.sr.color;
         this.currentAlpha = a;
         c.a = a;
@@ -52,6 +57,15 @@ public class VisualFader : MonoBehaviour {
         this.targetTime = time;
         this.currentAlpha = this.sr.color.a;
         this.targetAlpha = 1f;
+        this.changeAlphaLeft = this.targetAlpha - this.currentAlpha;
+        this.doFade = true;
+    }
+
+    public void FadeOut(float time) {
+        this.currentTime = 0f;
+        this.targetTime = time;
+        this.currentAlpha = 1f;
+        this.targetAlpha = 0f;
         this.changeAlphaLeft = this.targetAlpha - this.currentAlpha;
         this.doFade = true;
     }

@@ -35,6 +35,11 @@ public class sGameEventManager : MonoBehaviour {
         this.OnDeath?.Invoke();
     }
 
+    public event Action OnGameStart;
+    public void Trigger_GameStart() {
+        this.OnGameStart?.Invoke();
+    }
+
     public event Action OnInput;
     public void Trigger_Input() {
         this.OnInput?.Invoke();
@@ -45,11 +50,6 @@ public class sGameEventManager : MonoBehaviour {
     public void Trigger_Landing() {
         this.OnLanding?.Invoke();
         this.AfterLanding?.Invoke();
-    }
-    public event Action OnClick;
-    public void Trigger_Click()
-    {
-        OnClick?.Invoke();
     }
     /**
      * // Events
@@ -65,6 +65,7 @@ public class sGameEventManagerEditor : Editor {
         base.OnInspectorGUI();
         EditorGUILayout.HelpBox("OnCollected" + Environment.NewLine + "AfterCollected", MessageType.Info);
         EditorGUILayout.HelpBox("OnDeath", MessageType.Info);
+        EditorGUILayout.HelpBox("OnGameStart", MessageType.Info);
         EditorGUILayout.HelpBox("OnInput", MessageType.Info);
         EditorGUILayout.HelpBox("OnLanding" + Environment.NewLine + "AfterLanding", MessageType.Info);
     }

@@ -10,7 +10,7 @@ public class sIntroBehaviour : MonoBehaviour {
     [SerializeField] protected GameObject fakeAnimator;
     protected Transform fakeAnimatorT;
     protected bool doFakeAnimation = false;
-    protected float fakeAnimationSpeed = 12f;
+    protected float fakeAnimationSpeed = 15f;
 
     [SerializeField] protected GameObject[] firstFeatures;
 
@@ -52,7 +52,7 @@ public class sIntroBehaviour : MonoBehaviour {
                 this.doFakeAnimation = false;
                 Destroy(this.fakeAnimator);
                 this.showPlayer();
-                Invoke("showFirstFeature", 2f);
+                Invoke("showFirstFeature", 1.2f);
             }
         }
     }
