@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: Jump
+  filename: Force.cs
   description: Put your hands up and jump, jump, jump
   code: player.add(Force.Vertical * jumpForce);
   destroyAfterCollect: 1

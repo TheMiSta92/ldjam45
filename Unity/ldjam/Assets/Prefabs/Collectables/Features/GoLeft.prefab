@@ -122,8 +122,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: Go West
+  filename: NotRight.cs
   description: You can now walk to the left.
-  code: // if (moveX < 0f) moveX = 0f;
+  code: player.AddAbility(PLAYER_WALK_LEFT);
   destroyAfterCollect: 1
 --- !u!114 &8117976002992244681
 MonoBehaviour:

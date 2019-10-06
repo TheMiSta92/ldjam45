@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: Camera Follow
+  filename: Stalker.cs
   description: The camera now follows, smooooooth.
   code: camera.follow(player);
   destroyAfterCollect: 1
