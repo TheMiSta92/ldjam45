@@ -46,6 +46,11 @@ public class sGameEventManager : MonoBehaviour {
         this.OnLanding?.Invoke();
         this.AfterLanding?.Invoke();
     }
+    public event Action OnClick;
+    public void Trigger_Click()
+    {
+        OnClick?.Invoke();
+    }
     /**
      * // Events
      **/
