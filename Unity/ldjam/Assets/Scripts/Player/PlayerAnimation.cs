@@ -39,7 +39,7 @@ public class PlayerAnimation : MonoBehaviour {
     protected void doCheck() {
         if (!this.doChecks) return;
 
-        if (this.pm.IsAirborne() && !this.runningAni.StartsWith("Jump_")) {
+        if (this.pm.IsAirborne() && !this.runningAni.StartsWith("Jump_") && !this.pm.IsDucking()) {
             if (this.pm.GetHorizontalSpeed() > 0f) {
                 this.animator.Play("Jump_Right");
                 this.runningAni = "Jump_Right";
@@ -78,9 +78,11 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     protected void playLanding() {
+        if (!this.pm.IsDucking()) {
+            this.animator.Play("Landing");
+            this.runningAni = "Landing";
+        }
         this.doChecks = false;
-        this.animator.Play("Landing");
-        this.runningAni = "Landing";
         Invoke("startCheckingAgain", 10f / 30f);
     }
 

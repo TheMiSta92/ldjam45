@@ -191,6 +191,10 @@ public class PlayerMovement : MonoBehaviour {
         return this.IsAirborne() && this.GetVerticalSpeed() < 0f;
     }
 
+    public bool IsDucking() {
+        return this.shouldDuck;
+    }
+
     /// <summary>
     /// Returns the horizontal speed of the player
     /// </summary>
