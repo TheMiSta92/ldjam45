@@ -8,20 +8,15 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private static int layerDuckObstacles = 26;
 
     [SerializeField] private Transform spawnPoint;
-    [Header("Speed")]
-    [SerializeField] [Range(10f, 50f)] private float accelerationGain;
-    [SerializeField] [Range(1f, 50f)] private float maxAcceleration;
     private float accelerationNow = 0f;
-    [SerializeField] [Range(1f, 20f)] private float maxVelocity;
     [SerializeField] [Range(0.1f, 0.8f)] private float controllerDeadZone;
     private Rigidbody2D body;
-
+    [SerializeField] protected soPlayerParams parameters;
     private bool jumpAvailable = true;
     [Header("Features")]
     [SerializeField] private bool canJump = false;
     [SerializeField] private bool canDuck = false;
     [SerializeField] private bool canWalkLeft = false;
-    [SerializeField] [Range(200f, 2000f)] private float jumpHeight = 500f;
     [SerializeField] [Range(.1f, .95f)] private float lowestDuck = .5f;
     [SerializeField] [Range(.1f, 1f)] private float timeForDuckAnimation = 1f;
     private float passedDuckAnimationTime = 0f;
@@ -82,33 +77,40 @@ public class PlayerMovement : MonoBehaviour {
             sGameEventManager.Access().Trigger_Death();
         }
 
+        float maxVelSituational = this.parameters.maxVelocity;
+        if (this.IsDucking()) {
+            maxVelSituational *= .7f;
+        }
+        float accelerationGainSituational = this.parameters.accelerationGain;
+        if (this.IsDucking()) {
+            accelerationGainSituational *= .7f;
+        }
+
         if (moveX < -controllerDeadZone||moveX>controllerDeadZone)
         {
-            if (accelerationNow + accelerationGain < maxAcceleration)
-            {
-                accelerationNow = accelerationNow + accelerationGain;
+            this.accelerationNow += accelerationGainSituational * this.moveX;
+            if (Mathf.Abs(this.accelerationNow) > Mathf.Abs(this.parameters.maxAcceleration)) {
+                if (this.accelerationNow < -this.parameters.maxAcceleration) {
+                    this.accelerationNow = -this.parameters.maxAcceleration;
+                } else {
+                    this.accelerationNow = this.parameters.maxAcceleration;
+                }
             }
-            else
-            {
-                accelerationNow = maxAcceleration;
+            float newVel = body.velocity.x + this.accelerationNow * Time.fixedDeltaTime;
+            if (Mathf.Abs(newVel) > Mathf.Abs(maxVelSituational)) {
+                if (newVel < -maxVelSituational) {
+                    newVel = -maxVelSituational;
+                } else {
+                    newVel = maxVelSituational;
+                }
             }
-            if (getBody().velocity.x + accelerationNow < maxVelocity)
-            {
-                body.velocity = new Vector2(body.velocity.x + accelerationNow * Time.fixedDeltaTime * moveX, body.velocity.y);
-            }
-            else
-            {
-                body.velocity = new Vector2(maxVelocity * moveX * Time.fixedDeltaTime, body.velocity.y);
-            }
-
-            accelerationNow = accelerationNow - accelerationGain;
-
+            body.velocity = new Vector2(newVel, body.velocity.y);
         }
         if (Input.GetButton("Jump"))
         {
             if (jumpAvailable && this.canJump && !this.shouldDuck)
             {
-                getBody().AddForce(new Vector2(0, jumpHeight));
+                getBody().AddForce(new Vector2(0, this.parameters.jumpHeight));
                 jumpAvailable = false;
                 sGameEventManager.Access().Trigger_Input();
             }

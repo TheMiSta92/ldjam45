@@ -116,10 +116,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.2
   m_Material: {fileID: 6200000, guid: a3966ae7d448b8f4a8e6d3a6c3e23def, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -167,14 +167,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
-  accelerationGain: 20
-  maxAcceleration: 10
-  maxVelocity: 49.2
   controllerDeadZone: 0.252
+  parameters: {fileID: 11400000, guid: b986d1af6dd7a7349a9eb16c5c374a2f, type: 2}
   canJump: 1
   canDuck: 1
   canWalkLeft: 1
-  jumpHeight: 500
   lowestDuck: 0.5
   timeForDuckAnimation: 0.5
 --- !u!114 &1008522775482591876
