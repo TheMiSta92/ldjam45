@@ -20,8 +20,9 @@ public class ScriptText : MonoBehaviour
             newGo.transform.parent = script;
             newGo.transform.localPosition = new Vector3(0f, offsetY, 0f);
             newGo.GetComponent<TextMesh>().text = test.GetFilename();
-            sGameEventManager.Access().OnStageSwitch += ScriptText_OnStageSwitch;
+            newGo.AddComponent<TextVisualFader>();
         }
+        sGameEventManager.Access().OnStageSwitch += ScriptText_OnStageSwitch;
     }
 
     private void ScriptText_OnStageSwitch(int sceneId)
@@ -51,7 +52,7 @@ public class ScriptText : MonoBehaviour
                         TextMesh[] childMeshes = script.GetComponentsInChildren<TextMesh>();
                         foreach (TextMesh mesh in childMeshes)
                         {
-                            mesh.color = color_stage1;
+                            mesh.color = color_stage2;
                         }
                     }
                     break;

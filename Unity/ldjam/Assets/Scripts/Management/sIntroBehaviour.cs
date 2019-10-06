@@ -79,8 +79,14 @@ public class sIntroBehaviour : MonoBehaviour {
     protected void showFirstFeature() {
         foreach (GameObject feature in this.firstFeatures) {
             VisualFader fader = feature.GetComponent<VisualFader>();
+            GameObject child = feature.transform.GetChild(0).gameObject;
+            TextVisualFader textFader = null;
+            if (child != null) 
+            textFader = child.GetComponent<TextVisualFader>();
             if (fader != null) {
                 fader.FadeIn(5f);
+                if (textFader != null)
+                    textFader.FadeIn(5f);
             } else {
                 feature.SetActive(true);
             }
