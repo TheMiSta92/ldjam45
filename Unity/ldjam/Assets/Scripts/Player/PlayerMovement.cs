@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //Class for player movement
 [AddComponentMenu("LDJAM/Player/Movement")]
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour {
+    [SerializeField] private static int layerDuckObstacles = 26;
+
     [SerializeField] private Transform spawnPoint;
     [Header("Speed")]
     [SerializeField] [Range(10f, 50f)] private float accelerationGain;
@@ -46,7 +46,9 @@ public class PlayerMovement : MonoBehaviour {
             this.passedDuckAnimationTime = 0f;
             this.shouldDuck = true;
         } else if (this.shouldDuck && this.playerT.localScale.y < 1f && Input.GetAxisRaw("Vertical") > -controllerDeadZone) {
-            this.shouldDuck = false;
+            if (this.canStandUp()) {
+                this.shouldDuck = false;
+            }
         }
         if (!this.canWalkLeft && this.moveX < 0f) {
             this.moveX = 0f;
@@ -112,6 +114,26 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
+    }
+
+    protected bool canStandUp() {
+        UnityEngine.Object[] os = FindObjectsOfType(typeof(GameObject));
+        float midX = this.gameObject.transform.position.x;
+        float offset = this.gameObject.GetComponent<Collider2D>().bounds.size.x / 2f;
+        float topYOnMaxScale = this.gameObject.transform.position.y + this.gameObject.GetComponent<Collider2D>().bounds.size.y;
+        Vector2 pointToTestLeft = new Vector2(midX - offset, topYOnMaxScale);
+        Vector2 pointToTestRight = new Vector2(midX + offset, topYOnMaxScale);
+        foreach (UnityEngine.Object o in os) {
+            GameObject go = (GameObject)o;
+            if (go.layer == PlayerMovement.layerDuckObstacles) {
+                Collider2D coll = go.GetComponent<Collider2D>();
+                Vector2 closestLeft = coll.ClosestPoint(pointToTestLeft);
+                if (closestLeft == pointToTestLeft) return false;
+                Vector2 closestRight = coll.ClosestPoint(pointToTestRight);
+                if (closestRight == pointToTestRight) return false;
+            }
+        }
+        return true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
