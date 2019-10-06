@@ -24,7 +24,12 @@ public abstract class ACollectable : MonoBehaviour {
             sGameEventManager.Access().Trigger_Collected(this);
             sConsoleTextWriter.Access().ResetSpeed();
             sConsoleTextWriter.Access().ShowText(this.GetCode());
-            if (this.destroyAfterCollect) Destroy(this.gameObject);
+            if (this.destroyAfterCollect) {
+                Destroy(this.gameObject);
+            } else {
+                this.gameObject.GetComponent<Renderer>().enabled = false;
+                this.gameObject.GetComponent<Collider2D>().enabled = false;
+            }
         }
     }
 
