@@ -16,18 +16,21 @@ public class ScriptText : MonoBehaviour
         {
             Transform script = gameObject.transform.GetChild(i);
             ACollectable test = script.gameObject.GetComponent<ACollectable>();
-
-            if (test.ShouldShowFileName())
+            if (test != null)
             {
-                GameObject newGo = Instantiate(prefab);
-                newGo.transform.parent = script;
-                newGo.transform.localPosition = new Vector3(0f, offsetY, 0f);
-                newGo.GetComponent<TextMesh>().text = test.GetFilename();
-                newGo.AddComponent<TextVisualFader>();
+                if (test.ShouldShowFileName())
+                {
+                    GameObject newGo = Instantiate(prefab);
+                    newGo.transform.parent = script;
+                    newGo.transform.localPosition = new Vector3(0f, offsetY, 0f);
+                    newGo.GetComponent<TextMesh>().text = test.GetFilename();
+                    newGo.AddComponent<TextVisualFader>();
+                }
             }
         }
 
         sGameEventManager.Access().OnStageSwitch += ScriptText_OnStageSwitch;
+        ScriptText_OnStageSwitch(1);
     }
     private void ScriptText_OnStageSwitch(int sceneId)
     {
@@ -39,11 +42,9 @@ public class ScriptText : MonoBehaviour
                     for (int i = 0; i < gameObject.transform.childCount; ++i)
                     {
                         Transform script = gameObject.transform.GetChild(i);
-                        TextMesh[] childMeshes = script.GetComponentsInChildren<TextMesh>();
-                        foreach (TextMesh mesh in childMeshes)
-                        {
+                        TextMesh mesh = script.GetComponentInChildren<TextMesh>();
+                        if(mesh!=null)
                             mesh.color = color_stage1;
-                        }
                     }
                     break;
 
@@ -53,11 +54,9 @@ public class ScriptText : MonoBehaviour
                     for (int i = 0; i < gameObject.transform.childCount; ++i)
                     {
                         Transform script = gameObject.transform.GetChild(i);
-                        TextMesh[] childMeshes = script.GetComponentsInChildren<TextMesh>();
-                        foreach (TextMesh mesh in childMeshes)
-                        {
+                        TextMesh mesh = script.GetComponentInChildren<TextMesh>();
+                        if (mesh != null)
                             mesh.color = color_stage2;
-                        }
                     }
                     break;
                 }
