@@ -3,10 +3,15 @@ using UnityEngine.SceneManagement;
 
 public class ButtonClickHandler : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
-    private void OnMouseDown()
-    {
-        sGameEventManager.Access().Trigger_Click();
+    private Animator animator;
+
+
+    private void Start() {
+        this.animator = this.gameObject.GetComponent<Animator>();
+    }
+
+    private void OnMouseDown() {
+        sGameEventManager.Access().Trigger_GameStart();
     }
 
 }
