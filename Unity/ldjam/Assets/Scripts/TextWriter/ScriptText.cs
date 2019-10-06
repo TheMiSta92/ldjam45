@@ -16,12 +16,14 @@ public class ScriptText : MonoBehaviour
         {
             Transform script = gameObject.transform.GetChild(i);
             ACollectable test = script.gameObject.GetComponent<ACollectable>();
-            GameObject newGo = Instantiate(prefab);
-            newGo.transform.parent = script;
-            newGo.transform.localPosition = new Vector3(0f, offsetY, 0f);
-            newGo.GetComponent<TextMesh>().text = test.GetFilename();
-            sGameEventManager.Access().OnStageSwitch += ScriptText_OnStageSwitch;
+            if (test.ShouldShowFileName()) {
+                GameObject newGo = Instantiate(prefab);
+                newGo.transform.parent = script;
+                newGo.transform.localPosition = new Vector3(0f, offsetY, 0f);
+                newGo.GetComponent<TextMesh>().text = test.GetFilename();
+            }
         }
+        sGameEventManager.Access().OnStageSwitch += ScriptText_OnStageSwitch;
     }
 
     private void ScriptText_OnStageSwitch(int sceneId)
@@ -51,7 +53,7 @@ public class ScriptText : MonoBehaviour
                         TextMesh[] childMeshes = script.GetComponentsInChildren<TextMesh>();
                         foreach (TextMesh mesh in childMeshes)
                         {
-                            mesh.color = color_stage1;
+                            mesh.color = color_stage2;
                         }
                     }
                     break;
