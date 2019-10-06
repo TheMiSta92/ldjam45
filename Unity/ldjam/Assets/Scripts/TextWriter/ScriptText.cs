@@ -16,16 +16,19 @@ public class ScriptText : MonoBehaviour
         {
             Transform script = gameObject.transform.GetChild(i);
             ACollectable test = script.gameObject.GetComponent<ACollectable>();
-            if (test.ShouldShowFileName()) {
+
+            if (test.ShouldShowFileName())
+            {
                 GameObject newGo = Instantiate(prefab);
                 newGo.transform.parent = script;
                 newGo.transform.localPosition = new Vector3(0f, offsetY, 0f);
                 newGo.GetComponent<TextMesh>().text = test.GetFilename();
+                newGo.AddComponent<TextVisualFader>();
             }
         }
+
         sGameEventManager.Access().OnStageSwitch += ScriptText_OnStageSwitch;
     }
-
     private void ScriptText_OnStageSwitch(int sceneId)
     {
 
