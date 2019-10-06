@@ -7,6 +7,8 @@ TagManager:
   - Collectable
   - Ground
   - ConsoleText
+  - Script
+  - Can
   layers:
   - Default
   - TransparentFX
