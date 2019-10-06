@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] [Range(10f, 50f)] private float accelerationGain;
     [SerializeField] [Range(1f, 50f)] private float maxAcceleration;
     private float accelerationNow = 0f;
-    [SerializeField] [Range(20f, 100f)] private float maxVelocity;
+    [SerializeField] [Range(1f, 20f)] private float maxVelocity;
     [SerializeField] [Range(0.1f, 0.8f)] private float controllerDeadZone;
     private Rigidbody2D body;
 
