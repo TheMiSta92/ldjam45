@@ -3,17 +3,20 @@ using UnityEditor;
 using UnityEngine;
 
 [AddComponentMenu("LDJAM/Management/Game Event Manager")]
-public class sGameEventManager : MonoBehaviour {
+public class sGameEventManager : MonoBehaviour
+{
 
     protected static sGameEventManager singleton;
 
 
 
-    private void Awake() {
+    private void Awake()
+    {
         sGameEventManager.singleton = this;
     }
 
-    public static sGameEventManager Access() {
+    public static sGameEventManager Access()
+    {
         if (sGameEventManager.singleton == null) throw new System.Exception("Game Event Manager singleton wasn't instanced, add it to the Singleton-GO!");
         return sGameEventManager.singleton;
     }
@@ -25,31 +28,41 @@ public class sGameEventManager : MonoBehaviour {
      **/
     public event Action<ACollectable> OnCollected;
     public event Action<ACollectable> AfterCollected;
-    public void Trigger_Collected(ACollectable collected) {
+    public void Trigger_Collected(ACollectable collected)
+    {
         this.OnCollected?.Invoke(collected);
         this.AfterCollected?.Invoke(collected);
     }
 
     public event Action OnDeath;
-    public void Trigger_Death() {
+    public void Trigger_Death()
+    {
         this.OnDeath?.Invoke();
     }
 
     public event Action OnGameStart;
-    public void Trigger_GameStart() {
+    public void Trigger_GameStart()
+    {
         this.OnGameStart?.Invoke();
     }
 
     public event Action OnInput;
-    public void Trigger_Input() {
+    public void Trigger_Input()
+    {
         this.OnInput?.Invoke();
     }
 
     public event Action OnLanding;
     public event Action AfterLanding;
-    public void Trigger_Landing() {
+    public void Trigger_Landing()
+    {
         this.OnLanding?.Invoke();
         this.AfterLanding?.Invoke();
+    }
+    public event Action<int> OnStageSwitch;
+    public void Trigger_StageSwitch(int sceneId)
+    {
+        this.OnStageSwitch?.Invoke(sceneId);
     }
     /**
      * // Events
@@ -60,8 +73,10 @@ public class sGameEventManager : MonoBehaviour {
 
 
 [CustomEditor(typeof(sGameEventManager))]
-public class sGameEventManagerEditor : Editor {
-    public override void OnInspectorGUI() {
+public class sGameEventManagerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
         base.OnInspectorGUI();
         EditorGUILayout.HelpBox("OnCollected" + Environment.NewLine + "AfterCollected", MessageType.Info);
         EditorGUILayout.HelpBox("OnDeath", MessageType.Info);
