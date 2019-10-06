@@ -17,7 +17,9 @@ public class CameraMovement : MonoBehaviour
 
     [SerializeField] protected bool doFollow = false;
     [SerializeField] protected bool doFollowY = false;
+    [SerializeField] protected bool doFollowX = false;
     protected float lockedYVal;
+    protected float lockedXVal;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,7 @@ public class CameraMovement : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         body = this.GetComponent<Rigidbody2D>();
         this.lockedYVal = Camera.main.gameObject.transform.position.y;
+        this.lockedXVal= Camera.main.gameObject.transform.position.x;
     }
 
     // Update is called once per frame
@@ -38,6 +41,10 @@ public class CameraMovement : MonoBehaviour
                 if (!this.doFollowY) {
                     newVel.y = 0f;
                 }
+                if (!this.doFollowX)
+                {
+                    newVel.x = 0f;
+                }
                 this.body.velocity = newVel;
             }
             //if player is in right border and moves left
@@ -46,6 +53,10 @@ public class CameraMovement : MonoBehaviour
                 Vector2 newVel = new Vector2(this.player.GetComponent<Rigidbody2D>().velocity.x, this.body.velocity.y);
                 if (!this.doFollowY) {
                     newVel.y = 0f;
+                }
+                if (!this.doFollowX)
+                {
+                    newVel.x = 0f;
                 }
                 this.body.velocity = newVel;
             }
@@ -60,6 +71,10 @@ public class CameraMovement : MonoBehaviour
                 if (!this.doFollowY) {
                     newVel.y = 0f;
                 }
+                if (!this.doFollowX)
+                {
+                    newVel.x = 0f;
+                }
                 this.body.velocity = newVel;
             }
             //if player is in right border and moves right
@@ -72,6 +87,10 @@ public class CameraMovement : MonoBehaviour
                 Vector2 newVel = new Vector2(this.player.GetComponent<Rigidbody2D>().velocity.x + accelerationNow, this.body.velocity.y);
                 if (!this.doFollowY) {
                     newVel.y = 0f;
+                }
+                if (!this.doFollowX)
+                {
+                    newVel.x = 0f;
                 }
                 this.body.velocity = newVel;
             }
@@ -88,6 +107,10 @@ public class CameraMovement : MonoBehaviour
                     if (!this.doFollowY) {
                         newVel.y = 0f;
                     }
+                    if (!this.doFollowX)
+                    {
+                        newVel.x = 0f;
+                    }
                     this.body.velocity = newVel;
                 }
                 //if player moves right
@@ -100,6 +123,10 @@ public class CameraMovement : MonoBehaviour
                     Vector2 newVel = new Vector2(this.player.GetComponent<Rigidbody2D>().velocity.x + accelerationNow, this.body.velocity.y);
                     if (!this.doFollowY) {
                         newVel.y = 0f;
+                    }
+                    if (!this.doFollowX)
+                    {
+                        newVel.x = 0f;
                     }
                     this.body.velocity = newVel;
                 }
@@ -114,12 +141,27 @@ public class CameraMovement : MonoBehaviour
             if (!this.doFollowY) {
                 position.y = this.lockedYVal;
             }
+            if (!this.doFollowX)
+            {
+                position.x = this.lockedXVal;
+            }
             this.body.position = position;
+        }
+        else
+        {
+            if (doFollowY)
+            {
+                if (player.transform.position.y > 0)
+                {
+                    gameObject.transform.position = new Vector3(gameObject.transform.position.x, player.transform.position.y, gameObject.transform.position.z);
+                }
+            }
         }
     }
 
     public void DoFollow(bool follow = true) {
         this.doFollow = follow;
+        this.doFollowX = follow;
     }
 
     public void DoFollowY(bool follow = true) {
@@ -128,6 +170,15 @@ public class CameraMovement : MonoBehaviour
 
     public void SearchAgainForPlayer() {
         player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    public void DoFollowX(bool follow = true)
+    {
+        if (follow == false)
+        {
+            this.lockedXVal = Camera.main.gameObject.transform.position.x;
+        }
+        this.doFollowX = follow;
     }
 
 }
