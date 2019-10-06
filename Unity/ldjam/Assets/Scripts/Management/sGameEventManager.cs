@@ -59,6 +59,7 @@ public class sGameEventManager : MonoBehaviour
         this.OnLanding?.Invoke();
         this.AfterLanding?.Invoke();
     }
+
     public event Action<int> OnStageSwitch;
     public void Trigger_StageSwitch(int sceneId)
     {
@@ -83,5 +84,6 @@ public class sGameEventManagerEditor : Editor
         EditorGUILayout.HelpBox("OnGameStart", MessageType.Info);
         EditorGUILayout.HelpBox("OnInput", MessageType.Info);
         EditorGUILayout.HelpBox("OnLanding" + Environment.NewLine + "AfterLanding", MessageType.Info);
+        EditorGUILayout.HelpBox("OnStageSwitch", MessageType.Info);
     }
 }
