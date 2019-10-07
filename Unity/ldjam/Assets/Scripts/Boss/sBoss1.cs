@@ -34,6 +34,7 @@ public class sBoss1 : MonoBehaviour {
     [SerializeField] protected GameObject dialogueStart;
     [SerializeField] protected GameObject dialogueDeath;
     [Header("Misc")]
+    [SerializeField] protected GameObject prefabDamageScript;
     [SerializeField] protected GameObject entryTrigger;
     [SerializeField] protected GameObject blockSkip;
 
@@ -42,6 +43,8 @@ public class sBoss1 : MonoBehaviour {
 
     protected bool alive = true;
     protected bool facingRight = false;
+
+    protected bool droppedScriptAlive = false;
 
     private void Start() {
         sGameEventManager.Access().OnCollected += checkDamage;
@@ -52,13 +55,38 @@ public class sBoss1 : MonoBehaviour {
 
 
     protected void checkDamage(ACollectable feature) {
-        if (feature is DamageBoss1) this.gotDamage();
+        if (feature is DamageBoss1) {
+            this.gotDamage();
+            this.droppedScriptAlive = false;
+        }
     }
 
     protected void gotDamage() {
-        sGameEventManager.Access().Trigger_BossHit(.5f);
+        sGameEventManager.Access().Trigger_BossHit(1f);
         if (this.gameObject.GetComponent<BossHealthSystem>().GetHealth() > 0f) {
             this.playSound(this.damage);
+        }
+    }
+
+    protected void dropScriptRight() {
+        this.dropScript(true);
+    }
+
+    protected void dropScriptLeft() {
+        this.dropScript(false);
+    }
+
+    protected void dropScript(bool right) {
+        if (!this.droppedScriptAlive) {
+            this.droppedScriptAlive = true;
+            float posX = 63.1f;
+            if (right) {
+                posX = 72.2f;
+            }
+            GameObject go = Instantiate(this.prefabDamageScript, this.gameObject.transform);
+            go.GetComponent<ScriptText>().ShowFileName();
+            go.transform.parent = this.gameObject.transform.parent.parent;
+            go.transform.position = new Vector3(posX, -2f, 2.2f);
         }
     }
 
@@ -140,6 +168,7 @@ public class sBoss1 : MonoBehaviour {
         this.playAttackToLeft();
         Invoke("playIdleOnRight", 1.5f);
         Invoke("playDoubleDashFromRight", 3f);
+        Invoke("dropScriptRight", 3.5f);
         Invoke("playIdleOnRight", 5.5f);
         Invoke("playDashToLeft", 12f);
         Invoke("playIdleOnLeft", 13.5f);
@@ -147,6 +176,7 @@ public class sBoss1 : MonoBehaviour {
         Invoke("playIdleOnLeft", 15.4f);
         Invoke("playAttackToRight", 15.5f);
         Invoke("playDashToRight", 17f);
+        Invoke("dropScriptLeft", 17.5f);
         Invoke("playDoubleDashFromRight", 18.5f);
         Invoke("playIdleOnRight", 21f);
         Invoke("playAttackToLeft", 26f);

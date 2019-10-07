@@ -20454,6 +20454,8 @@ MonoBehaviour:
   normal: {fileID: 8300000, guid: c23374d572249ea49a659bf06ddabec8, type: 3}
   dialogueStart: {fileID: 2029512739}
   dialogueDeath: {fileID: 1582251404}
+  prefabDamageScript: {fileID: 5738710641710599700, guid: 2c6f2cce73132114baf89795471f5ed6,
+    type: 3}
   entryTrigger: {fileID: 1439241306}
   blockSkip: {fileID: 1629073040}
 --- !u!82 &373345263
