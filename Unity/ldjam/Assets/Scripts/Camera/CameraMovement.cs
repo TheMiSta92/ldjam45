@@ -172,6 +172,12 @@ public class CameraMovement : MonoBehaviour
         }
     }
 
+    private void Update() {
+        if (this.gameObject.transform.position.y < 0f) {
+            this.gameObject.transform.position = new Vector3(gameObject.transform.position.x, 0f, gameObject.transform.position.z);
+        }
+    }
+
     public void DoFollow(bool follow = true) {
         this.doFollow = follow;
         this.doFollowX = follow;

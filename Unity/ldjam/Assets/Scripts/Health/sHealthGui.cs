@@ -35,7 +35,8 @@ public class sHealthGui : MonoBehaviour {
         if (before == health + 1f) {
             setHeartEmpty(this.playerGui.transform.Find(before.ToString()).gameObject);
         } else if (before == health - 1f) {
-            setHeartFull(this.playerGui.transform.Find(health.ToString()).gameObject);
+            Debug.Log("Set to " + health);
+            setHeartFull(this.playerGui.transform.Find(before.ToString()).gameObject);
         }
     }
 

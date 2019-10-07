@@ -9,6 +9,7 @@ public class HealthUp : ACollectable {
 
     protected override void applyEffect() {
         PlayerHealthSystem health = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealthSystem>();
+        health.SetHealth(health.GetHealth() + 1f);
         sHealthGui.Access().SetHealthPlayer(health.GetHealth() + 1f, health.GetHealth());
     }
 
