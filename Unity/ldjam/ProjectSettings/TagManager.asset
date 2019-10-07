@@ -10,6 +10,7 @@ TagManager:
   - Script
   - Can
   - Fader
+  - Endpoint_Text
   layers:
   - Default
   - TransparentFX
