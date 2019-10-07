@@ -23,7 +23,6 @@ public class CameraUnlockTrigger : MonoBehaviour
     {
         camBody.velocity = new Vector2(centerspeed, 0);
         yield return new WaitWhile(() => camBody.position.x <= centerObj.transform.position.x);
-        Debug.Log("Camera Centered");
         camBody.velocity = new Vector2(0, camBody.velocity.y);
     }
 }
