@@ -32,8 +32,6 @@ public class PlayerAnimation : MonoBehaviour {
         }
     }
 
-
-
     protected void doCheck() {
         if (!this.doChecks) return;
 
@@ -70,11 +68,13 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     protected void playLanding() {
-        if (!this.pm.IsDucking()) {
-            this.PlayAnimation("Landing");
+        if (this.doChecks) {
+            if (!this.pm.IsDucking()) {
+                this.PlayAnimation("Landing");
+            }
+            this.doChecks = false;
+            Invoke("StartCheckingAgain", 10f / 30f);
         }
-        this.doChecks = false;
-        Invoke("StartCheckingAgain", 10f / 30f);
     }
 
     public void StartCheckingAgain() {
@@ -85,11 +85,36 @@ public class PlayerAnimation : MonoBehaviour {
         this.doChecks = false;
     }
 
+    public void PlayDamageAnimation() {
+        this.doChecks = false;
+        if (this.runningAni.EndsWith("_Left")) {
+            this.PlayAnimation("Damage_Left");
+        } else {
+            this.PlayAnimation("Damage_Right");
+        }
+        Invoke("StartCheckingAgain", .3f);
+    }
+
+    public void PlayDeathAnimation() {
+        this.doChecks = false;
+        if (this.runningAni.EndsWith("_Left")) {
+            this.PlayAnimation("Death_Left");
+        } else {
+            this.PlayAnimation("Death_Right");
+        }
+    }
+
     public void PlayAnimation(string name) {
         if (this.gameObject.activeSelf) {
             this.animator.Play(name);
             this.runningAni = name;
         }
+    }
+
+    private void OnDestroy() {
+        sGameEventManager.Access().OnInput -= doCheck;
+        sGameEventManager.Access().OnLanding -= playLanding;
+        sGameEventManager.Access().AfterLanding -= doCheck;
     }
 
 }

@@ -34,15 +34,21 @@ public class Stage2 : ACollectable {
         this.playerStage1.GetComponent<PlayerAnimation>().PlayAnimation("Evolve");
     }
 
+    protected float healthToSet;
+
     protected void swapToNextStage() {
+        this.playerStage2.AddComponent<PlayerHealthSystem>();
+        this.healthToSet = this.playerStage1.GetComponent<PlayerHealthSystem>().GetHealth();
         this.playerStage1.tag = "Untagged";
-        this.playerStage1.SetActive(false);
+        Destroy(this.playerStage1);
+
         this.playerStage2.transform.position = new Vector3(this.playerStage1.transform.position.x, this.playerStage1.transform.position.y, this.playerStage1.transform.position.z);
         this.playerStage2.SetActive(true);
         this.playerStage2.tag = "Player";
         Camera.main.gameObject.GetComponent<CameraMovement>().SearchAgainForPlayer();
         this.playerStage2.GetComponent<PlayerAnimation>().enabled = true;
         this.playerStage2.GetComponent<PlayerAnimation>().StopChecking();
+        
         this.playerStage2.GetComponent<Rigidbody2D>().velocity = new Vector2(this.conservedVel.x, this.conservedVel.y);
     }
 
@@ -50,6 +56,7 @@ public class Stage2 : ACollectable {
         this.playerStage2.GetComponent<PlayerMovement>().enabled = true;
         this.playerStage2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         this.playerStage2.GetComponent<PlayerAnimation>().StartCheckingAgain();
+        this.playerStage2.GetComponent<PlayerHealthSystem>().SetHealth(this.healthToSet);
     }
 
 }

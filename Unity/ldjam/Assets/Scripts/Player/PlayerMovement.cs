@@ -37,7 +37,12 @@ public class PlayerMovement : MonoBehaviour
         body = this.gameObject.GetComponent<Rigidbody2D>();
         this.playerT = this.gameObject.transform;
         sGameEventManager.Access().OnDeath += Respawn;
+        sGameEventManager.Access().OnGameOver += disable;
         sGameEventManager.Access().OnLanding += ResetDoubleJump;
+    }
+
+    protected void disable() {
+        this.enabled = false;
     }
 
     private void ResetDoubleJump()
@@ -330,5 +335,11 @@ public class PlayerMovement : MonoBehaviour
     public void SetReverse(bool able = true)
     {
         this.reverse = able;
+    }
+
+    private void OnDestroy() {
+        sGameEventManager.Access().OnDeath -= Respawn;
+        sGameEventManager.Access().OnGameOver -= disable;
+        sGameEventManager.Access().OnLanding -= ResetDoubleJump;
     }
 }

@@ -15,19 +15,7 @@ public class ScriptText : MonoBehaviour
         for (int i = 0; i < gameObject.transform.childCount; ++i)
         {
             Transform script = gameObject.transform.GetChild(i);
-            ACollectable test = script.gameObject.GetComponent<ACollectable>();
-            if (test != null)
-            {
-                if (test.ShouldShowFileName())
-                {
-                    GameObject newGo = Instantiate(prefab);
-                    newGo.transform.parent = script;
-                    newGo.transform.localPosition = new Vector3(0f, offsetY, 0f);
-                    newGo.GetComponent<TextMesh>().text = test.GetFilename();
-                    if(test.transform.name=="GoLeft"||test.transform.name=="CameraFeature")
-                    newGo.AddComponent<TextVisualFader>();
-                }
-            }
+            this.ShowFileName(script);
         }
 
         sGameEventManager.Access().OnStageSwitch += ScriptText_OnStageSwitch;
@@ -62,5 +50,26 @@ public class ScriptText : MonoBehaviour
                     break;
                 }
         }
+
+   
+    }
+
+    public void ShowFileName(Transform script) {
+        ACollectable test = script.gameObject.GetComponent<ACollectable>();
+        if (test != null) {
+            if (test.ShouldShowFileName()) {
+                GameObject newGo = Instantiate(prefab);
+                newGo.transform.parent = script;
+                newGo.transform.localPosition = new Vector3(0f, offsetY, 0f);
+                newGo.GetComponent<TextMesh>().text = test.GetFilename();
+                if (test.transform.name == "GoLeft" || test.transform.name == "CameraFeature")
+                    newGo.AddComponent<TextVisualFader>();
+            }
+        }
+    }
+
+    public void ShowFileName() {
+        Transform t = this.gameObject.transform;
+        this.ShowFileName(t);
     }
 }
