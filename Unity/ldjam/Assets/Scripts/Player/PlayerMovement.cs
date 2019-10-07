@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool reverse = false;
 
     private Transform playerT;
+    private bool jumpReleased;
 
     // Start is called before the first frame update
     void Start()
@@ -157,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetButton("Jump"))
         {
-            if (timeSinceLastJump > timeBetweenJumps)
+            if (timeSinceLastJump > timeBetweenJumps&&jumpReleased)
             {
                 if (jumpAvailable && this.canJump && !this.shouldDuck)
                 {
@@ -176,11 +177,12 @@ public class PlayerMovement : MonoBehaviour
                             FirstJump = false;
                             getBody().AddForce(new Vector2(0, this.parameters.jumpHeight));
                             timeSinceLastJump = 0;
+                            jumpReleased = false;
                         }
                         else
                         {
                             jumpAvailable = false;
-                            getBody().AddForce(new Vector2(0, this.parameters.jumpHeight));
+                            getBody().AddForce(new Vector2(0, this.parameters.jumpHeight/2));
                             timeSinceLastJump = 0;
                         }
                     }
@@ -189,6 +191,10 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         timeSinceLastJump += Time.deltaTime;
+        if (Input.GetButtonUp("Jump"))
+        {
+            jumpReleased = true;
+        }
     }
 
     protected bool canStandUp()
