@@ -30,6 +30,9 @@ public class sBoss1 : MonoBehaviour {
     [SerializeField] protected AudioClip cave;
     [SerializeField] protected AudioClip fight;
     [SerializeField] protected AudioClip normal;
+    [Header("Dialogues")]
+    [SerializeField] protected GameObject dialogueStart;
+    [SerializeField] protected GameObject dialogueDeath;
     [Header("Misc")]
     [SerializeField] protected GameObject entryTrigger;
     [SerializeField] protected GameObject blockSkip;
@@ -110,9 +113,18 @@ public class sBoss1 : MonoBehaviour {
         this.playCaveMusic();
         this.playIdleOnRight();
         Invoke("freezePlayerMovement", .5f);
+        Invoke("playDialogueStart", 2f);
         Invoke("playFightingMusic", 12f);
         Invoke("allowPlayerMovement", 12f);
         Invoke("doFightSequence", 13f);
+    }
+
+    protected void playDialogueStart() {
+        this.dialogueStart.GetComponent<Animator>().enabled = true;
+    }
+
+    protected void playDialogueDeath() {
+        this.dialogueDeath.GetComponent<Animator>().enabled = true;
     }
 
     protected void freezePlayerMovement() {
@@ -145,6 +157,7 @@ public class sBoss1 : MonoBehaviour {
     protected void onBossFinished() {
         this.alive = false;
         this.playDeath();
+        Invoke("playDialogueDeath", 1f);
         Invoke("playAmbientMusic", 2.5f);
         Invoke("endFight", 2.6f);
         Invoke("doDestroy", 5f);
