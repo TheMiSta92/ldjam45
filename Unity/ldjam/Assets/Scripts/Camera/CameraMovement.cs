@@ -146,6 +146,14 @@ public class CameraMovement : MonoBehaviour
                 position.x = this.lockedXVal;
             }
             this.body.position = position;
+
+            if (this.doFollowX)
+            {
+                if (position.x < player.transform.position.x - 10f || position.x > player.transform.position.x + 10f)
+                {
+                    this.body.position = new Vector2(player.transform.position.x, body.position.y);
+                }
+            }
         }
         else
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraLockTrigger : MonoBehaviour
 {
-    [SerializeField] [Range(1f, 5f)] private float centerspeed;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
