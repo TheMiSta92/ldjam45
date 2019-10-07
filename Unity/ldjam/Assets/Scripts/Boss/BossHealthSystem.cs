@@ -8,8 +8,15 @@ public class BossHealthSystem : AHealthSystem {
         sGameEventManager.Access().OnBossHit += this.onDamage;
     }
 
+    protected override void removeEventListener() {
+        sGameEventManager.Access().OnBossHit -= this.onDamage;
+    }
+
     protected override void onDeath() {
         sGameEventManager.Access().Trigger_BossKilled();
     }
 
+    protected override void playDamageAnimation() {
+        // do nothing (handled in sBoss1)
+    }
 }

@@ -8,8 +8,16 @@ public class PlayerHealthSystem : AHealthSystem {
         sGameEventManager.Access().OnCharacterHurt += this.onDamage;
     }
 
-    protected override void onDeath() {
-        sGameEventManager.Access().Trigger_GameOver();
+    protected override void removeEventListener() {
+        sGameEventManager.Access().OnCharacterHurt -= this.onDamage;
     }
 
+    protected override void onDeath() {
+        sGameEventManager.Access().Trigger_GameOver();
+        this.gameObject.GetComponent<PlayerAnimation>().PlayDeathAnimation();
+    }
+
+    protected override void playDamageAnimation() {
+        this.gameObject.GetComponent<PlayerAnimation>().PlayDamageAnimation();
+    }
 }

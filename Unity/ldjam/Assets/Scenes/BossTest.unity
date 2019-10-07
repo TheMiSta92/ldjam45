@@ -20606,6 +20606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
+  health: 0
 --- !u!1001 &374233564
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27039,9 +27040,9 @@ MonoBehaviour:
   maxAcceleration: 6
   borderWidth: 10
   verticalOffset: 1.5
-  doFollow: 1
+  doFollow: 0
   doFollowY: 0
-  doFollowX: 1
+  doFollowX: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -27093,7 +27094,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.42, y: 0.46, z: -10}
+  m_LocalPosition: {x: 0.58, y: 0.3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 333480316}
@@ -28218,6 +28219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stages:
+  - {fileID: 1033351968}
   - {fileID: 1037238111}
 --- !u!1 &551402237
 GameObject:
@@ -61948,19 +61950,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2092500599}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1200172992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1200172991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed005166ec49cda4c99be257e5935a21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 3
 --- !u!1001 &1200395972
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -106227,30 +106216,15 @@ PrefabInstance:
       propertyPath: spawnPoint
       value: 
       objectReference: {fileID: 1781072343}
-    - target: {fileID: 3137919570128114867, guid: 9f6c05b69e0d8a741baf1560f7524cf7,
-        type: 3}
-      propertyPath: canJump
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3137919570128114867, guid: 9f6c05b69e0d8a741baf1560f7524cf7,
-        type: 3}
-      propertyPath: canDuck
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3137919570128114867, guid: 9f6c05b69e0d8a741baf1560f7524cf7,
-        type: 3}
-      propertyPath: canWalkLeft
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3137919570128114876, guid: 9f6c05b69e0d8a741baf1560f7524cf7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 57.4
+      value: 1.34
       objectReference: {fileID: 0}
     - target: {fileID: 3137919570128114876, guid: 9f6c05b69e0d8a741baf1560f7524cf7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.75
+      value: -1.15
       objectReference: {fileID: 0}
     - target: {fileID: 3137919570128114876, guid: 9f6c05b69e0d8a741baf1560f7524cf7,
         type: 3}
