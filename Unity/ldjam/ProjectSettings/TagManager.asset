@@ -11,6 +11,7 @@ TagManager:
   - Can
   - Fader
   - Endpoint_Text
+  - GameOver_Text
   layers:
   - Default
   - TransparentFX
