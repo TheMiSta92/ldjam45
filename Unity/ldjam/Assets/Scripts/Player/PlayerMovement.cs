@@ -213,8 +213,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.layer == 25)
         {
-            sGameEventManager.Access().Trigger_Landing();
-            jumpAvailable = true;
+            if (playerT != null && this.GetComponent<Collider2D>() != null && collision != null)
+            {
+                if (playerT.position.y - this.GetComponent<Collider2D>().bounds.size.y / 2 >= collision.transform.position.y + collision.collider.bounds.size.y / 2 + collision.collider.offset.y)
+                {
+                    sGameEventManager.Access().Trigger_Landing();
+                    jumpAvailable = true;
+                }
+            }
         }
     }
 
