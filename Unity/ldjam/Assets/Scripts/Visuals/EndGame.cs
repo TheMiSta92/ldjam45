@@ -17,7 +17,7 @@ public class EndGame : MonoBehaviour
     [SerializeField] [Range(1f, 5f)] private float waitUntilfadeOut;
     private FadeOutAudioOnGameEnd fadeAudio;
     private AudioSource mainAudio;
-    [SerializeField] private AudioClip titleClip;
+    [SerializeField] private GameObject credits;
 
 
     private void Update()
