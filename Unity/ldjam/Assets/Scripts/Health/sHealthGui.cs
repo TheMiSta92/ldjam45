@@ -44,11 +44,15 @@ public class sHealthGui : MonoBehaviour {
     }
 
     public void ShowHealthPlayer(bool show = true) {
-        this.playerGui.SetActive(show);
+        for (int i = 0; i < this.playerGui.transform.childCount; i++) {
+            this.playerGui.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled = show;
+        }
     }
 
     public void ShowHealthBoss(bool show = true) {
-        this.bossGui.SetActive(show);
+        for (int i = 0; i < this.bossGui.transform.childCount; i++) {
+            this.bossGui.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled = show;
+        }
     }
 
 

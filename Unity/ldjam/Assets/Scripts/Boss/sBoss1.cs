@@ -43,12 +43,16 @@ public class sBoss1 : MonoBehaviour {
 
     protected bool alive = true;
     protected bool facingRight = false;
+    protected bool idle = true;
+
+    protected bool playerAlive = true;
 
     protected bool droppedScriptAlive = false;
 
     private void Start() {
         sGameEventManager.Access().OnCollected += checkDamage;
         sGameEventManager.Access().OnBossKilled += onBossFinished;
+        sGameEventManager.Access().OnGameOver += onGameOver;
         this.animator = this.gameObject.GetComponent<Animator>();
     }
 
@@ -59,6 +63,10 @@ public class sBoss1 : MonoBehaviour {
             this.gotDamage();
             this.droppedScriptAlive = false;
         }
+    }
+
+    protected void onGameOver() {
+        this.playerAlive = false;
     }
 
     protected void gotDamage() {
@@ -77,7 +85,7 @@ public class sBoss1 : MonoBehaviour {
     }
 
     protected void dropScript(bool right) {
-        if (!this.droppedScriptAlive) {
+        if (!this.droppedScriptAlive && this.alive && this.playerAlive) {
             this.droppedScriptAlive = true;
             float posX = 63.1f;
             if (right) {
@@ -210,21 +218,32 @@ public class sBoss1 : MonoBehaviour {
 
 
     protected void playIdleOnLeft() {
-        if (this.alive) {
+        if (this.alive && this.playerAlive) {
+            this.idle = true;
             this.facingRight = true;
             this.animator.Play("Idle_On_Left");
+        } else if (!this.playerAlive) {
+            if (!this.idle) {
+                this.animator.Play("Idle_On_Left");
+            }
         }
     }
 
     protected void playIdleOnRight() {
-        if (this.alive) {
+        if (this.alive && this.playerAlive) {
+            this.idle = true;
             this.facingRight = false;
             this.animator.Play("Idle_On_Right");
+        } else if (!this.playerAlive) {
+            if (!this.idle) {
+                this.animator.Play("Idle_On_Left");
+            }
         }
     }
 
     protected void playAttackToLeft() {
-        if (this.alive) {
+        if (this.alive && this.playerAlive) {
+            this.idle = false;
             this.facingRight = false;
             this.animator.Play("Attack_To_Left");
             Invoke("playAttackSound", .5f);
@@ -232,7 +251,8 @@ public class sBoss1 : MonoBehaviour {
     }
 
     protected void playAttackToRight() {
-        if (this.alive) {
+        if (this.alive && this.playerAlive) {
+            this.idle = false;
             this.facingRight = true;
             this.animator.Play("Attack_To_Right");
             Invoke("playAttackSound", .5f);
@@ -240,7 +260,8 @@ public class sBoss1 : MonoBehaviour {
     }
 
     protected void playDashToLeft() {
-        if (this.alive) {
+        if (this.alive && this.playerAlive) {
+            this.idle = false;
             this.facingRight = false;
             this.animator.Play("Dash_To_Left");
             Invoke("playDashSound", .2f);
@@ -248,7 +269,8 @@ public class sBoss1 : MonoBehaviour {
     }
 
     protected void playDashToRight() {
-        if (this.alive) {
+        if (this.alive && this.playerAlive) {
+            this.idle = false;
             this.facingRight = true;
             this.animator.Play("Dash_To_Right");
             Invoke("playDashSound", .2f);
@@ -256,7 +278,8 @@ public class sBoss1 : MonoBehaviour {
     }
 
     protected void playDoubleDashFromRight() {
-        if (this.alive) {
+        if (this.alive && this.playerAlive) {
+            this.idle = false;
             this.facingRight = false;
             this.animator.Play("Double_Dash_From_Right");
             Invoke("playDashSound", .2f);
