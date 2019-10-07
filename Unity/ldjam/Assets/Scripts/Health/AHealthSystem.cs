@@ -38,8 +38,19 @@ public abstract class AHealthSystem : MonoBehaviour {
         return this.health;
     }
 
+    public float GetMaxHealth() {
+        return this.maxHealth;
+    }
+
     public void SetHealth(float health) {
         this.health = health;
+        if (this.health > this.maxHealth) {
+            this.health = this.maxHealth;
+        }
+    }
+
+    public void SetMaxHealth(float maxHealth) {
+        this.maxHealth = maxHealth;
         if (this.health > this.maxHealth) {
             this.health = this.maxHealth;
         }
