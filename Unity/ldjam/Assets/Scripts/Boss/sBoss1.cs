@@ -209,7 +209,7 @@ public class sBoss1 : MonoBehaviour {
     }
 
     protected void endFight() {
-        this.blockSkip.GetComponent<CameraLockTrigger>().UnlockCamera();
+        this.blockSkip.GetComponent<BorderScript>().UnlockCamera();
         sHealthGui.Access().ShowHealthBoss(false);
         Destroy(this.blockSkip);
         Destroy(this.entryTrigger);
