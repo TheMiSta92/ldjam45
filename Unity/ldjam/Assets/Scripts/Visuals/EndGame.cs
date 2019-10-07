@@ -15,7 +15,9 @@ public class EndGame : MonoBehaviour
     private bool fadeFinished = false;
     private bool fadeRunning = false;
     [SerializeField] [Range(1f, 5f)] private float waitUntilfadeOut;
-
+    private FadeOutAudioOnGameEnd fadeAudio;
+    private AudioSource mainAudio;
+    [SerializeField] private AudioClip titleClip;
 
 
     private void Update()
@@ -23,6 +25,7 @@ public class EndGame : MonoBehaviour
         if (isEndTriggered)
         {
             Invoke("fadeOut", waitUntilfadeOut);
+            fadeAudio.fadeOut();
             this.isEndTriggered = false;
         }
         if (this.fadeRunning)
@@ -31,7 +34,9 @@ public class EndGame : MonoBehaviour
         }
         if (this.fadeFinished)
         {
+            playTitleMusic();
             playCredits();
+            Invoke("fadeOutMusic", 27f); 
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -44,6 +49,8 @@ public class EndGame : MonoBehaviour
             mesh = GameObject.FindGameObjectWithTag("Fader").GetComponent<MeshRenderer>();
             mesh.material.EnableKeyword("_ALPHABLEND_ON");   // change shader-mode to "Fade"
             isEndTriggered = true;
+            fadeAudio = Camera.main.GetComponentInChildren<FadeOutAudioOnGameEnd>();
+            mainAudio= Camera.main.GetComponentInChildren<AudioSource>();
         }
     }
     private void playCredits()
@@ -88,6 +95,18 @@ public class EndGame : MonoBehaviour
     {
         Debug.Log("Switching to tile screen");
         SceneManager.LoadScene(0);
+    }
+    
+    private void playTitleMusic()
+    {
+        this.mainAudio.Stop();
+        this.mainAudio.clip = titleClip;
+        this.mainAudio.volume = 1f;
+        this.mainAudio.Play();
+    }
+    private void fadeOutMusic()
+    {
+        fadeAudio.fadeOut(3);
     }
 
 }
