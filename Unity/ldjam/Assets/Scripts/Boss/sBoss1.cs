@@ -58,9 +58,11 @@ public class sBoss1 : MonoBehaviour {
 
     protected void playSound(AudioClip clip) {
         if (this.sfx == null) this.sfx = this.gameObject.GetComponent<AudioSource>();
-        this.sfx.Stop();
-        this.sfx.clip = clip;
-        this.sfx.Play();
+        if (this.alive || !this.alive && clip == this.death) {
+            this.sfx.Stop();
+            this.sfx.clip = clip;
+            this.sfx.Play();
+        }
     }
 
     protected void playAmbient(AudioClip clip) {
@@ -195,11 +197,13 @@ public class sBoss1 : MonoBehaviour {
     }
 
     protected void playDeath() {
+        //float lastPosX = this.gameObject.transform.position.x;
         if (this.facingRight) {
             this.animator.Play("Death_Right");
         } else {
             this.animator.Play("Death_Left");
         }
+        //this.gameObject.transform.position = new Vector3(lastPosX, this.gameObject.transform.position.y, this.gameObject.transform.position.z);
         this.playDeathSound();
     }
 
