@@ -19,7 +19,7 @@ public abstract class ACollectable : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.CompareTag("Player")) {
+        if (collision.gameObject.CompareTag("Player") && this.canBeCollected()) {
             this.applyEffect();
             sGameEventManager.Access().Trigger_Collected(this);
             sConsoleTextWriter.Access().ResetSpeed();
@@ -45,5 +45,9 @@ public abstract class ACollectable : MonoBehaviour {
 
     protected abstract void applyEffect();
     protected abstract void undoEffect();
+
+    protected virtual bool canBeCollected() {
+        return true;
+    }
 
 }

@@ -13,9 +13,11 @@ public class PlayDamageOrDeathAudio : MonoBehaviour {
     }
 
     protected void playDamage(float dmg) {
-        this.source.Stop();
-        this.source.clip = this.damage;
-        this.source.Play();
+        if (dmg > 0f) {
+            this.source.Stop();
+            this.source.clip = this.damage;
+            this.source.Play();
+        }
     }
 
     protected void playDeath() {
