@@ -35,6 +35,8 @@ public class Stage2 : ACollectable {
     }
 
     protected void swapToNextStage() {
+        this.playerStage2.AddComponent<PlayerHealthSystem>();
+        this.playerStage2.GetComponent<PlayerHealthSystem>().SetHealth(this.playerStage1.GetComponent<PlayerHealthSystem>().GetHealth());
         this.playerStage1.tag = "Untagged";
         this.playerStage1.SetActive(false);
         this.playerStage2.transform.position = new Vector3(this.playerStage1.transform.position.x, this.playerStage1.transform.position.y, this.playerStage1.transform.position.z);

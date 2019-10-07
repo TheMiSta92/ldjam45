@@ -21,15 +21,26 @@ public class sBoss1 : MonoBehaviour {
 
 
     protected Animator animator;
+    [Header("SFX")]
     [SerializeField] protected AudioClip dash;
     [SerializeField] protected AudioClip attack;
     [SerializeField] protected AudioClip damage;
-    protected AudioSource audioSource;
+    [SerializeField] protected AudioClip death;
+    [Header("Ambient")]
+    [SerializeField] protected AudioClip cave;
+    [SerializeField] protected AudioClip fight;
+    [SerializeField] protected AudioClip normal;
+
+    protected AudioSource sfx;
+    protected AudioSource ambient;
+
+    protected bool alive = true;
+    protected bool facingRight = false;
 
     private void Start() {
         sGameEventManager.Access().OnCollected += checkDamage;
+        sGameEventManager.Access().OnBossKilled += onBossFinished;
         this.animator = this.gameObject.GetComponent<Animator>();
-        this.DoSequence();
     }
 
 
@@ -39,15 +50,29 @@ public class sBoss1 : MonoBehaviour {
     }
 
     protected void gotDamage() {
-        // TODO remove health
-        this.playSound(this.damage);
+        sGameEventManager.Access().Trigger_BossHit(.5f);
+        if (this.gameObject.GetComponent<BossHealthSystem>().GetHealth() > 0f) {
+            this.playSound(this.damage);
+        }
     }
 
     protected void playSound(AudioClip clip) {
-        if (this.audioSource == null) this.audioSource = this.gameObject.GetComponent<AudioSource>();
-        this.audioSource.Stop();
-        this.audioSource.clip = clip;
-        this.audioSource.Play();
+        if (this.sfx == null) this.sfx = this.gameObject.GetComponent<AudioSource>();
+        this.sfx.Stop();
+        this.sfx.clip = clip;
+        this.sfx.Play();
+    }
+
+    protected void playAmbient(AudioClip clip) {
+        if (this.ambient == null) this.ambient = Camera.main.gameObject.transform.Find("Audio_Script").gameObject.GetComponent<AudioSource>();
+        this.ambient.Stop();
+        this.ambient.clip = clip;
+        if (clip == this.fight) {
+            this.ambient.volume = .3f;
+        } else {
+            this.ambient.volume = 1f;
+        }
+        this.ambient.Play();
     }
 
     protected void playDashSound() {
@@ -58,58 +83,124 @@ public class sBoss1 : MonoBehaviour {
         this.playSound(this.attack);
     }
 
+    protected void playDeathSound() {
+        this.playSound(this.death);
+    }
+
+    protected void playCaveMusic() {
+        this.playAmbient(this.cave);
+    }
+
+    protected void playFightingMusic() {
+        this.playAmbient(this.fight);
+    }
+
+    protected void playAmbientMusic() {
+        this.playAmbient(this.normal);
+    }
+
 
 
     public void DoSequence() {
+        this.playCaveMusic();
         this.playIdleOnRight();
-        Invoke("playAttackToLeft", 6f);
-        Invoke("playIdleOnRight", 7.5f);
-        Invoke("playDoubleDashFromRight", 9f);
-        Invoke("playIdleOnRight", 11.5f);
-        Invoke("playDashToLeft", 18f);
-        Invoke("playIdleOnLeft", 19.5f);
-        Invoke("playAttackToRight", 20f);
-        Invoke("playAttackToRight", 21.5f);
-        Invoke("playDashToRight", 23f);
-        Invoke("playDoubleDashFromRight", 24.5f);
-        Invoke("playAttackToLeft", 27f);
-        Invoke("DoSequence", 28.5f);
+        Invoke("playFightingMusic", 12f);
+        Invoke("doFightSequence", 13f);
+    }
+
+    protected void doFightSequence() {
+        this.playAttackToLeft();
+        Invoke("playIdleOnRight", 1.5f);
+        Invoke("playDoubleDashFromRight", 3f);
+        Invoke("playIdleOnRight", 5.5f);
+        Invoke("playDashToLeft", 12f);
+        Invoke("playIdleOnLeft", 13.5f);
+        Invoke("playAttackToRight", 14f);
+        Invoke("playIdleOnLeft", 15.4f);
+        Invoke("playAttackToRight", 15.5f);
+        Invoke("playDashToRight", 17f);
+        Invoke("playDoubleDashFromRight", 18.5f);
+        Invoke("playIdleOnRight", 21f);
+        Invoke("playAttackToLeft", 26f);
+        Invoke("playIdleOnRight", 27.4f);
+        Invoke("doFightSequence", 27.5f);
+    }
+
+    protected void onBossFinished() {
+        this.alive = false;
+        this.playDeath();
+        Invoke("playAmbientMusic", 2.5f);
+        Invoke("doDestroy", 3f);
+    }
+
+    protected void doDestroy() {
+        Destroy(this.gameObject);
     }
 
 
 
     protected void playIdleOnLeft() {
-        this.animator.Play("Idle_On_Left");
+        if (this.alive) {
+            this.facingRight = true;
+            this.animator.Play("Idle_On_Left");
+        }
     }
 
     protected void playIdleOnRight() {
-        this.animator.Play("Idle_On_Right");
+        if (this.alive) {
+            this.facingRight = false;
+            this.animator.Play("Idle_On_Right");
+        }
     }
 
     protected void playAttackToLeft() {
-        this.animator.Play("Attack_To_Left");
-        Invoke("playAttackSound", .5f);
+        if (this.alive) {
+            this.facingRight = false;
+            this.animator.Play("Attack_To_Left");
+            Invoke("playAttackSound", .5f);
+        }
     }
 
     protected void playAttackToRight() {
-        this.animator.Play("Attack_To_Right");
-        Invoke("playAttackSound", .5f);
+        if (this.alive) {
+            this.facingRight = true;
+            this.animator.Play("Attack_To_Right");
+            Invoke("playAttackSound", .5f);
+        }
     }
 
     protected void playDashToLeft() {
-        this.animator.Play("Dash_To_Left");
-        Invoke("playDashSound", .2f);
+        if (this.alive) {
+            this.facingRight = false;
+            this.animator.Play("Dash_To_Left");
+            Invoke("playDashSound", .2f);
+        }
     }
 
     protected void playDashToRight() {
-        this.animator.Play("Dash_To_Right");
-        Invoke("playDashSound", .2f);
+        if (this.alive) {
+            this.facingRight = true;
+            this.animator.Play("Dash_To_Right");
+            Invoke("playDashSound", .2f);
+        }
     }
 
     protected void playDoubleDashFromRight() {
-        this.animator.Play("Double_Dash_From_Right");
-        Invoke("playDashSound", .2f);
-        Invoke("playDashSound", 1.4f);
+        if (this.alive) {
+            this.facingRight = false;
+            this.animator.Play("Double_Dash_From_Right");
+            Invoke("playDashSound", .2f);
+            Invoke("playDashSound", 1.4f);
+        }
+    }
+
+    protected void playDeath() {
+        if (this.facingRight) {
+            this.animator.Play("Death_Right");
+        } else {
+            this.animator.Play("Death_Left");
+        }
+        this.playDeathSound();
     }
 
 }
