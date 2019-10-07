@@ -17,7 +17,9 @@ public class EndGame : MonoBehaviour
     [SerializeField] [Range(1f, 5f)] private float waitUntilfadeOut;
     private FadeOutAudioOnGameEnd fadeAudio;
     private AudioSource mainAudio;
+    [SerializeField] protected AudioClip audio;
     [SerializeField] private GameObject credits;
+    protected bool doScroll = false;
 
 
     private void Update()
@@ -36,7 +38,11 @@ public class EndGame : MonoBehaviour
         {
             playTitleMusic();
             playCredits();
-            Invoke("fadeOutMusic", 27f); 
+            Invoke("fadeOutMusic", 27f);
+            Invoke("goToTitleScreen", 40f);
+        }
+        if (this.doScroll) {
+            this.credits.transform.Translate(0f, 1.15f * Time.deltaTime, 0f);
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -56,14 +62,8 @@ public class EndGame : MonoBehaviour
     private void playCredits()
     {
         this.fadeFinished = false;
-        Debug.Log("Playing Credits");
-        Camera.main.gameObject.GetComponent<VideoPlayer>().Play();
-        Camera.main.gameObject.GetComponent<VideoPlayer>().loopPointReached += EndGame_loopPointReached;
-    }
-
-    private void EndGame_loopPointReached(VideoPlayer source)
-    {
-        goToTitleScreen();
+        this.credits.SetActive(true);
+        this.doScroll = true;
     }
 
     private void fadeOut()
@@ -100,7 +100,7 @@ public class EndGame : MonoBehaviour
     private void playTitleMusic()
     {
         this.mainAudio.Stop();
-        this.mainAudio.clip = titleClip;
+        this.mainAudio.clip = audio;
         this.mainAudio.volume = 1f;
         this.mainAudio.Play();
     }
