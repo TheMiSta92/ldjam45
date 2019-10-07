@@ -20,4 +20,9 @@ public class PlayerHealthSystem : AHealthSystem {
     protected override void playDamageAnimation() {
         this.gameObject.GetComponent<PlayerAnimation>().PlayDamageAnimation();
     }
+
+    protected override void refreshHealthGui(float health, float before) {
+        sHealthGui.Access().SetHealthPlayer(health, before);
+    }
+
 }

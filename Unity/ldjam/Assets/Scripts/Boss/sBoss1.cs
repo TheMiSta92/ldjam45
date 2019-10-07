@@ -186,14 +186,23 @@ public class sBoss1 : MonoBehaviour {
 
     protected void onBossFinished() {
         this.alive = false;
+        this.removeBossColliders();
         this.playDeath();
         Invoke("playDialogueDeath", 1f);
         Invoke("playAmbientMusic", 2.5f);
         Invoke("endFight", 2.6f);
     }
 
+    protected void removeBossColliders() {
+        this.gameObject.GetComponent<Collider2D>().enabled = false;
+        for (int i = 0; i < this.gameObject.transform.childCount; i++) {
+            this.gameObject.transform.GetChild(i).gameObject.GetComponent<Collider2D>().enabled = false;
+        }
+    }
+
     protected void endFight() {
         this.blockSkip.GetComponent<CameraLockTrigger>().UnlockCamera();
+        sHealthGui.Access().ShowHealthBoss(false);
         Destroy(this.blockSkip);
         Destroy(this.entryTrigger);
     }

@@ -11,6 +11,7 @@ public abstract class AHealthSystem : MonoBehaviour {
     protected abstract void removeEventListener();
     protected abstract void onDeath();
     protected abstract void playDamageAnimation();
+    protected abstract void refreshHealthGui(float health, float healthBefore);
 
 
 
@@ -21,7 +22,9 @@ public abstract class AHealthSystem : MonoBehaviour {
 
 
     protected void onDamage(float damage) {
+        float healthBefore = this.health;
         this.health -= damage;
+        this.refreshHealthGui(this.health, healthBefore);
         if (this.health <= 0f) {
             this.onDeath();
         } else {

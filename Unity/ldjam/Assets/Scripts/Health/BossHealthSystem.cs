@@ -19,4 +19,9 @@ public class BossHealthSystem : AHealthSystem {
     protected override void playDamageAnimation() {
         // do nothing (handled in sBoss1)
     }
+
+    protected override void refreshHealthGui(float health, float before) {
+        sHealthGui.Access().SetHealthBoss(health, before);
+    }
+
 }
