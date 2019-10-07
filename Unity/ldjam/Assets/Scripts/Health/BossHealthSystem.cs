@@ -9,7 +9,7 @@ public class BossHealthSystem : AHealthSystem {
     }
 
     protected override void removeEventListener() {
-        sGameEventManager.Access().OnBossHit -= this.onDamage;
+        sGameEventManager.Access(true).OnBossHit -= this.onDamage;
     }
 
     protected override void onDeath() {
