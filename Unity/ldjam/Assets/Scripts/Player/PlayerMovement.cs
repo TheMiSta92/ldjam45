@@ -290,6 +290,7 @@ public class PlayerMovement : MonoBehaviour
     public void Respawn()
     {
         this.gameObject.transform.position = this.spawnPoint.transform.position;
+        Camera.main.transform.position = new Vector3(this.spawnPoint.transform.position.x, this.spawnPoint.transform.position.y, Camera.main.transform.position.z);
         this.gameObject.transform.rotation = this.spawnPoint.transform.rotation;
         getBody().velocity = Vector2.zero;
         getBody().angularVelocity = 0f;
