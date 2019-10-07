@@ -160,17 +160,12 @@ public class sBoss1 : MonoBehaviour {
         Invoke("playDialogueDeath", 1f);
         Invoke("playAmbientMusic", 2.5f);
         Invoke("endFight", 2.6f);
-        Invoke("doDestroy", 5f);
     }
 
     protected void endFight() {
         this.blockSkip.GetComponent<CameraLockTrigger>().UnlockCamera();
         Destroy(this.blockSkip);
         Destroy(this.entryTrigger);
-    }
-
-    protected void doDestroy() {
-        Destroy(this.gameObject);
     }
 
 
