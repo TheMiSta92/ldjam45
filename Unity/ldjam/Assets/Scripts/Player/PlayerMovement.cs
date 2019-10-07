@@ -115,6 +115,7 @@ public class PlayerMovement : MonoBehaviour
         if (this.gameObject.transform.position.y < -8f)
         {
             sGameEventManager.Access().Trigger_Death();
+            sGameEventManager.Access().Trigger_CharacterHurt(1f);
         }
 
         float maxVelSituational = this.parameters.maxVelocity;
