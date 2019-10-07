@@ -96,24 +96,3 @@ public class sGameEventManager : MonoBehaviour
      **/
 
 }
-
-
-
-[CustomEditor(typeof(sGameEventManager))]
-public class sGameEventManagerEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        EditorGUILayout.HelpBox("OnBossHit > float damage", MessageType.Info);
-        EditorGUILayout.HelpBox("OnBossKilled", MessageType.Info);
-        EditorGUILayout.HelpBox("OnCharacterHurt > float damage" + Environment.NewLine + "AfterCharacterHurt > float damage", MessageType.Info);
-        EditorGUILayout.HelpBox("OnCollected > ACollectable collected" + Environment.NewLine + "AfterCollected > ACollectable collected", MessageType.Info);
-        EditorGUILayout.HelpBox("OnDeath", MessageType.Info);
-        EditorGUILayout.HelpBox("OnGameStart", MessageType.Info);
-        EditorGUILayout.HelpBox("OnGameOver", MessageType.Info);
-        EditorGUILayout.HelpBox("OnInput", MessageType.Info);
-        EditorGUILayout.HelpBox("OnLanding" + Environment.NewLine + "AfterLanding", MessageType.Info);
-        EditorGUILayout.HelpBox("OnStageSwitch > int stageId (1-based-index)", MessageType.Info);
-    }
-}
