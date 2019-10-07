@@ -68,11 +68,13 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     protected void playLanding() {
-        if (!this.pm.IsDucking()) {
-            this.PlayAnimation("Landing");
+        if (this.doChecks) {
+            if (!this.pm.IsDucking()) {
+                this.PlayAnimation("Landing");
+            }
+            this.doChecks = false;
+            Invoke("StartCheckingAgain", 10f / 30f);
         }
-        this.doChecks = false;
-        Invoke("StartCheckingAgain", 10f / 30f);
     }
 
     public void StartCheckingAgain() {
