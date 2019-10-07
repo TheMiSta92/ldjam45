@@ -30,6 +30,9 @@ public class sBoss1 : MonoBehaviour {
     [SerializeField] protected AudioClip cave;
     [SerializeField] protected AudioClip fight;
     [SerializeField] protected AudioClip normal;
+    [Header("Misc")]
+    [SerializeField] protected GameObject entryTrigger;
+    [SerializeField] protected GameObject blockSkip;
 
     protected AudioSource sfx;
     protected AudioSource ambient;
@@ -106,8 +109,19 @@ public class sBoss1 : MonoBehaviour {
     public void DoSequence() {
         this.playCaveMusic();
         this.playIdleOnRight();
+        Invoke("freezePlayerMovement", .5f);
         Invoke("playFightingMusic", 12f);
+        Invoke("allowPlayerMovement", 12f);
         Invoke("doFightSequence", 13f);
+    }
+
+    protected void freezePlayerMovement() {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().enabled = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+    }
+
+    protected void allowPlayerMovement() {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().enabled = true;
     }
 
     protected void doFightSequence() {
@@ -132,7 +146,14 @@ public class sBoss1 : MonoBehaviour {
         this.alive = false;
         this.playDeath();
         Invoke("playAmbientMusic", 2.5f);
-        Invoke("doDestroy", 3f);
+        Invoke("endFight", 2.6f);
+        Invoke("doDestroy", 5f);
+    }
+
+    protected void endFight() {
+        this.blockSkip.GetComponent<CameraLockTrigger>().UnlockCamera();
+        Destroy(this.blockSkip);
+        Destroy(this.entryTrigger);
     }
 
     protected void doDestroy() {
