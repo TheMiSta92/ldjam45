@@ -120,12 +120,12 @@ public class PlayerMovement : MonoBehaviour
         float maxVelSituational = this.parameters.maxVelocity;
         if (this.IsDucking())
         {
-            maxVelSituational *= .7f;
+            maxVelSituational *= .5f;
         }
         float accelerationGainSituational = this.parameters.accelerationGain;
         if (this.IsDucking())
         {
-            accelerationGainSituational *= .7f;
+            accelerationGainSituational *= .5f;
         }
 
         if (moveX < -controllerDeadZone || moveX > controllerDeadZone)
