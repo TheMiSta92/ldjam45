@@ -33,7 +33,7 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (this.doFollow) {
+        if (this.doFollow && GameObject.FindGameObjectWithTag("Player") != null) {
             //if player is in left border and moves right
             if (this.player.transform.position.x < (this.transform.position.x - border + 0.5 * borderWidth) && this.player.transform.position.x > (this.transform.position.x - border - 0.5 * borderWidth) && this.player.GetComponent<PlayerMovement>().GetHorizontalSpeed() > 0) {
                 this.accelerationNow = 0;
