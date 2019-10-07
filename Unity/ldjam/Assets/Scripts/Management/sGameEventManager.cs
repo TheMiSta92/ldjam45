@@ -15,9 +15,11 @@ public class sGameEventManager : MonoBehaviour
         sGameEventManager.singleton = this;
     }
 
-    public static sGameEventManager Access()
+    public static sGameEventManager Access(bool ignoreError = false)
     {
-        if (sGameEventManager.singleton == null) throw new System.Exception("Game Event Manager singleton wasn't instanced, add it to the Singleton-GO!");
+        if (sGameEventManager.singleton == null) {
+            if (!ignoreError) throw new System.Exception("Game Event Manager singleton wasn't instanced, add it to the Singleton-GO!");
+        }
         return sGameEventManager.singleton;
     }
 

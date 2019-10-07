@@ -112,9 +112,9 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        sGameEventManager.Access().OnInput -= doCheck;
-        sGameEventManager.Access().OnLanding -= playLanding;
-        sGameEventManager.Access().AfterLanding -= doCheck;
+        sGameEventManager.Access(true).OnInput -= doCheck;
+        sGameEventManager.Access(true).OnLanding -= playLanding;
+        sGameEventManager.Access(true).AfterLanding -= doCheck;
     }
 
 }
