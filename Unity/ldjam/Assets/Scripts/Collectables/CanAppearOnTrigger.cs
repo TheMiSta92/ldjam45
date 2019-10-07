@@ -20,8 +20,8 @@ public class CanAppearOnTrigger : MonoBehaviour {
 
     protected void startIdleAnimation() {
         if (this.gameObject.activeSelf) {
-            if (this.gameObject.GetComponent<Animator>() != null) {
-                if (this.gameObject.GetComponent<Animator>().enabled) {
+            if (this.gameObject.transform.parent.gameObject.GetComponent<Animator>() != null) {
+                if (this.gameObject.transform.parent.gameObject.GetComponent<Animator>().enabled) {
                     this.gameObject.transform.parent.gameObject.GetComponent<Animator>().Play("Idle");
                 }
             }
