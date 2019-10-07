@@ -34,6 +34,7 @@ public class sBoss1 : MonoBehaviour {
     [SerializeField] protected GameObject dialogueStart;
     [SerializeField] protected GameObject dialogueDeath;
     [Header("Misc")]
+    [SerializeField] protected GameObject newSpawnpoint;
     [SerializeField] protected GameObject prefabDamageScript;
     [SerializeField] protected GameObject entryTrigger;
     [SerializeField] protected GameObject blockSkip;
@@ -94,7 +95,7 @@ public class sBoss1 : MonoBehaviour {
             GameObject go = Instantiate(this.prefabDamageScript, this.gameObject.transform);
             go.GetComponent<ScriptText>().ShowFileName();
             go.transform.parent = this.gameObject.transform.parent.parent;
-            go.transform.position = new Vector3(posX, -2f, 2.2f);
+            go.transform.position = new Vector3(posX, -2.2f, 2.2f);
         }
     }
 
@@ -148,6 +149,7 @@ public class sBoss1 : MonoBehaviour {
     public void DoSequence() {
         this.playCaveMusic();
         this.playIdleOnRight();
+        this.moveSpawnpoint();
         Invoke("freezePlayerMovement", .5f);
         Invoke("playDialogueStart", 2f);
         Invoke("playFightingMusic", 12f);
@@ -161,6 +163,14 @@ public class sBoss1 : MonoBehaviour {
 
     protected void playDialogueDeath() {
         this.dialogueDeath.GetComponent<Animator>().enabled = true;
+    }
+
+    protected void moveSpawnpoint() {
+        Vector3 oldSpawnpointPos = GameObject.FindGameObjectWithTag("Player").transform.parent.position;
+        Vector3 newSpawnpointPos = this.newSpawnpoint.transform.position;
+        Vector3 diff = newSpawnpointPos - oldSpawnpointPos;
+        GameObject.FindGameObjectWithTag("Player").transform.parent.position = newSpawnpointPos;
+        GameObject.FindGameObjectWithTag("Player").transform.Translate(-diff);
     }
 
     protected void freezePlayerMovement() {
