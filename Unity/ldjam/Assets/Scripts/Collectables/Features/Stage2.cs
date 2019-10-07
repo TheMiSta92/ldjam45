@@ -35,10 +35,12 @@ public class Stage2 : ACollectable {
     }
 
     protected float healthToSet;
+    protected float maxHealthToSet;
 
     protected void swapToNextStage() {
         this.playerStage2.AddComponent<PlayerHealthSystem>();
         this.healthToSet = this.playerStage1.GetComponent<PlayerHealthSystem>().GetHealth();
+        this.maxHealthToSet = this.playerStage1.GetComponent<PlayerHealthSystem>().GetMaxHealth();
         this.playerStage1.tag = "Untagged";
         Destroy(this.playerStage1);
 
@@ -56,6 +58,7 @@ public class Stage2 : ACollectable {
         this.playerStage2.GetComponent<PlayerMovement>().enabled = true;
         this.playerStage2.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         this.playerStage2.GetComponent<PlayerAnimation>().StartCheckingAgain();
+        this.playerStage2.GetComponent<PlayerHealthSystem>().SetMaxHealth(this.maxHealthToSet);
         this.playerStage2.GetComponent<PlayerHealthSystem>().SetHealth(this.healthToSet);
     }
 
