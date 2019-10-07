@@ -25,8 +25,8 @@ public class PlayDamageOrDeathAudio : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        sGameEventManager.Access().OnCharacterHurt -= playDamage;
-        sGameEventManager.Access().OnGameOver -= playDeath;
+        sGameEventManager.Access(true).OnCharacterHurt -= playDamage;
+        sGameEventManager.Access(true).OnGameOver -= playDeath;
     }
 
 }

@@ -9,7 +9,7 @@ public class PlayerHealthSystem : AHealthSystem {
     }
 
     protected override void removeEventListener() {
-        sGameEventManager.Access().OnCharacterHurt -= this.onDamage;
+        sGameEventManager.Access(true).OnCharacterHurt -= this.onDamage;
     }
 
     protected override void onDeath() {

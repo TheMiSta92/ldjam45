@@ -24,13 +24,13 @@ public class PlayerMovement : MonoBehaviour
     private bool shouldDuck = false;
     private float moveX = 0f;
     [SerializeField] private bool doubleJumpActive = false;
-    private bool FirstJump = false;
+    private bool FirstJump = true;
     private float timeSinceLastJump = 0.5f;
     [SerializeField] [Range(0f, 1f)] float timeBetweenJumps = 0;
     [SerializeField] private bool reverse = false;
 
     private Transform playerT;
-    private bool jumpReleased;
+    private bool jumpReleased = true;
 
     // Start is called before the first frame update
     void Start()
@@ -115,6 +115,7 @@ public class PlayerMovement : MonoBehaviour
         if (this.gameObject.transform.position.y < -8f)
         {
             sGameEventManager.Access().Trigger_Death();
+            sGameEventManager.Access().Trigger_CharacterHurt(1f);
         }
 
         float maxVelSituational = this.parameters.maxVelocity;
@@ -344,8 +345,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnDestroy() {
-        sGameEventManager.Access().OnDeath -= Respawn;
-        sGameEventManager.Access().OnGameOver -= disable;
-        sGameEventManager.Access().OnLanding -= ResetDoubleJump;
+        sGameEventManager.Access(true).OnDeath -= Respawn;
+        sGameEventManager.Access(true).OnGameOver -= disable;
+        sGameEventManager.Access(true).OnLanding -= ResetDoubleJump;
     }
 }
