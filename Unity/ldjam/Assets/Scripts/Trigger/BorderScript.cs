@@ -8,6 +8,19 @@ public class BorderScript : MonoBehaviour
     [SerializeField] private GameObject centerObj;
     [SerializeField] private bool isLeftBorder;
 
+    protected bool isLocked = false;
+    protected float lastLockedXPos = 0f;
+
+    private void Start() {
+        
+    }
+
+    protected void tryRecenter() {
+        if (this.isLocked) {
+            Camera.main.gameObject.transform.position = new Vector3(this.lastLockedXPos, Camera.main.gameObject.transform.position.y, Camera.main.gameObject.transform.position.z);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
@@ -32,6 +45,8 @@ public class BorderScript : MonoBehaviour
 
     public void UnlockCamera()
     {
+        sGameEventManager.Access().AfterDeath -= tryRecenter;
+        this.isLocked = false;
         Camera cam = GameObject.FindObjectOfType<Camera>();
         CameraMovement move = cam.gameObject.GetComponent<CameraMovement>();
         move.DoFollow(true);
@@ -40,6 +55,9 @@ public class BorderScript : MonoBehaviour
     }
     public void LockCamera()
     {
+        sGameEventManager.Access().AfterDeath += tryRecenter;
+        this.isLocked = true;
+        this.lastLockedXPos = centerObj.transform.position.x;
         Camera cam = GameObject.FindObjectOfType<Camera>();
         CameraMovement move = cam.gameObject.GetComponent<CameraMovement>();
         move.DoFollow(false);

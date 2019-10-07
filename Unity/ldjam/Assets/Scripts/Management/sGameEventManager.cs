@@ -54,9 +54,11 @@ public class sGameEventManager : MonoBehaviour
     }
 
     public event Action OnDeath;
+    public event Action AfterDeath;
     public void Trigger_Death()
     {
         this.OnDeath?.Invoke();
+        this.AfterDeath?.Invoke();
     }
 
     public event Action OnGameStart;

@@ -47,7 +47,7 @@ public class Stage3 : ACollectable {
         this.playerStage3.transform.position = new Vector3(this.playerStage2.transform.position.x, this.playerStage2.transform.position.y, this.playerStage2.transform.position.z);
         this.playerStage3.SetActive(true);
         this.playerStage3.tag = "Player";
-        Camera.main.gameObject.GetComponent<CameraMovement>().SearchAgainForPlayer();
+        Camera.main.gameObject.GetComponent<CameraMovement>().GetPlayer();
         this.playerStage3.GetComponent<PlayerAnimation>().enabled = true;
         this.playerStage3.GetComponent<PlayerAnimation>().StopChecking();
         

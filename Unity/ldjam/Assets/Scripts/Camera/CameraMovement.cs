@@ -24,20 +24,25 @@ public class CameraMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        sGameEventManager.Access().OnGameOver += deactivate;
         player = GameObject.FindGameObjectWithTag("Player");
         body = this.GetComponent<Rigidbody2D>();
         this.lockedYVal = Camera.main.gameObject.transform.position.y;
         this.lockedXVal= Camera.main.gameObject.transform.position.x;
     }
 
+    protected void deactivate() {
+        this.enabled = false;
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
         if (this.doFollow && GameObject.FindGameObjectWithTag("Player") != null) {
-            //if player is in left border and moves right
-            if (this.player.transform.position.x < (this.transform.position.x - border + 0.5 * borderWidth) && this.player.transform.position.x > (this.transform.position.x - border - 0.5 * borderWidth) && this.player.GetComponent<PlayerMovement>().GetHorizontalSpeed() > 0) {
+            //if GetPlayer() is in left border and moves right
+            if (this.GetPlayer().transform.position.x < (this.transform.position.x - border + 0.5 * borderWidth) && this.GetPlayer().transform.position.x > (this.transform.position.x - border - 0.5 * borderWidth) && this.GetPlayer().GetComponent<PlayerMovement>().GetHorizontalSpeed() > 0) {
                 this.accelerationNow = 0;
-                Vector2 newVel = new Vector2(this.player.GetComponent<Rigidbody2D>().velocity.x, this.body.velocity.y);
+                Vector2 newVel = new Vector2(this.GetPlayer().GetComponent<Rigidbody2D>().velocity.x, this.body.velocity.y);
                 if (!this.doFollowY) {
                     newVel.y = 0f;
                 }
@@ -47,10 +52,10 @@ public class CameraMovement : MonoBehaviour
                 }
                 this.body.velocity = newVel;
             }
-            //if player is in right border and moves left
-            else if (this.player.transform.position.x < (this.transform.position.x + border + 0.5 * borderWidth) && this.player.transform.position.x > (this.transform.position.x + border - 0.5 * borderWidth) && this.player.GetComponent<PlayerMovement>().GetHorizontalSpeed() < 0) {
+            //if GetPlayer() is in right border and moves left
+            else if (this.GetPlayer().transform.position.x < (this.transform.position.x + border + 0.5 * borderWidth) && this.GetPlayer().transform.position.x > (this.transform.position.x + border - 0.5 * borderWidth) && this.GetPlayer().GetComponent<PlayerMovement>().GetHorizontalSpeed() < 0) {
                 this.accelerationNow = 0;
-                Vector2 newVel = new Vector2(this.player.GetComponent<Rigidbody2D>().velocity.x, this.body.velocity.y);
+                Vector2 newVel = new Vector2(this.GetPlayer().GetComponent<Rigidbody2D>().velocity.x, this.body.velocity.y);
                 if (!this.doFollowY) {
                     newVel.y = 0f;
                 }
@@ -60,14 +65,14 @@ public class CameraMovement : MonoBehaviour
                 }
                 this.body.velocity = newVel;
             }
-            //if player is in left border and moves left
-            else if (this.player.transform.position.x < (this.transform.position.x - border + 0.5 * borderWidth) && this.player.transform.position.x > (this.transform.position.x - border - 0.5 * borderWidth) && this.player.GetComponent<PlayerMovement>().GetHorizontalSpeed() < 0) {
+            //if GetPlayer() is in left border and moves left
+            else if (this.GetPlayer().transform.position.x < (this.transform.position.x - border + 0.5 * borderWidth) && this.GetPlayer().transform.position.x > (this.transform.position.x - border - 0.5 * borderWidth) && this.GetPlayer().GetComponent<PlayerMovement>().GetHorizontalSpeed() < 0) {
                 if (accelerationNow + accelerationStep < maxAcceleration) {
                     accelerationNow = accelerationNow + accelerationStep;
                 } else {
                     accelerationNow = maxAcceleration;
                 }
-                Vector2 newVel = new Vector2(this.player.GetComponent<Rigidbody2D>().velocity.x - accelerationNow, this.body.velocity.y);
+                Vector2 newVel = new Vector2(this.GetPlayer().GetComponent<Rigidbody2D>().velocity.x - accelerationNow, this.body.velocity.y);
                 if (!this.doFollowY) {
                     newVel.y = 0f;
                 }
@@ -77,14 +82,14 @@ public class CameraMovement : MonoBehaviour
                 }
                 this.body.velocity = newVel;
             }
-            //if player is in right border and moves right
-            else if (this.player.transform.position.x < (this.transform.position.x + border + 0.5 * borderWidth) && this.player.transform.position.x > (this.transform.position.x + border - 0.5 * borderWidth) && this.player.GetComponent<PlayerMovement>().GetHorizontalSpeed() > 0) {
+            //if GetPlayer() is in right border and moves right
+            else if (this.GetPlayer().transform.position.x < (this.transform.position.x + border + 0.5 * borderWidth) && this.GetPlayer().transform.position.x > (this.transform.position.x + border - 0.5 * borderWidth) && this.GetPlayer().GetComponent<PlayerMovement>().GetHorizontalSpeed() > 0) {
                 if (accelerationNow + accelerationStep < maxAcceleration) {
                     accelerationNow = accelerationNow + accelerationStep;
                 } else {
                     accelerationNow = maxAcceleration;
                 }
-                Vector2 newVel = new Vector2(this.player.GetComponent<Rigidbody2D>().velocity.x + accelerationNow, this.body.velocity.y);
+                Vector2 newVel = new Vector2(this.GetPlayer().GetComponent<Rigidbody2D>().velocity.x + accelerationNow, this.body.velocity.y);
                 if (!this.doFollowY) {
                     newVel.y = 0f;
                 }
@@ -94,16 +99,16 @@ public class CameraMovement : MonoBehaviour
                 }
                 this.body.velocity = newVel;
             }
-            //if player is in the middle
+            //if GetPlayer() is in the middle
             else {
-                //if player moves left
-                if (this.player.GetComponent<PlayerMovement>().GetHorizontalSpeed() < 0) {
+                //if GetPlayer() moves left
+                if (this.GetPlayer().GetComponent<PlayerMovement>().GetHorizontalSpeed() < 0) {
                     if (accelerationNow + accelerationStep < maxAcceleration) {
                         accelerationNow = accelerationNow + accelerationStep;
                     } else {
                         accelerationNow = maxAcceleration;
                     }
-                    Vector2 newVel = new Vector2(this.player.GetComponent<Rigidbody2D>().velocity.x - accelerationNow, this.body.velocity.y);
+                    Vector2 newVel = new Vector2(this.GetPlayer().GetComponent<Rigidbody2D>().velocity.x - accelerationNow, this.body.velocity.y);
                     if (!this.doFollowY) {
                         newVel.y = 0f;
                     }
@@ -113,14 +118,14 @@ public class CameraMovement : MonoBehaviour
                     }
                     this.body.velocity = newVel;
                 }
-                //if player moves right
-                if (this.player.GetComponent<PlayerMovement>().GetHorizontalSpeed() > 0) {
+                //if GetPlayer() moves right
+                if (this.GetPlayer().GetComponent<PlayerMovement>().GetHorizontalSpeed() > 0) {
                     if (accelerationNow + accelerationStep < maxAcceleration) {
                         accelerationNow = accelerationNow + accelerationStep;
                     } else {
                         accelerationNow = maxAcceleration;
                     }
-                    Vector2 newVel = new Vector2(this.player.GetComponent<Rigidbody2D>().velocity.x + accelerationNow, this.body.velocity.y);
+                    Vector2 newVel = new Vector2(this.GetPlayer().GetComponent<Rigidbody2D>().velocity.x + accelerationNow, this.body.velocity.y);
                     if (!this.doFollowY) {
                         newVel.y = 0f;
                     }
@@ -130,14 +135,14 @@ public class CameraMovement : MonoBehaviour
                     }
                     this.body.velocity = newVel;
                 }
-                //if player does not move
-                if (this.player.GetComponent<PlayerMovement>().GetHorizontalSpeed() == 0) {
+                //if GetPlayer() does not move
+                if (this.GetPlayer().GetComponent<PlayerMovement>().GetHorizontalSpeed() == 0) {
                     accelerationNow = 0;
                     this.body.velocity = new Vector2(0, 0);
                 }
             }
 
-            Vector2 position = new Vector2(this.body.position.x, this.player.GetComponent<Rigidbody2D>().position.y + verticalOffset);
+            Vector2 position = new Vector2(this.body.position.x, this.GetPlayer().GetComponent<Rigidbody2D>().position.y + verticalOffset);
             if (!this.doFollowY) {
                 position.y = this.lockedYVal;
             }
@@ -149,9 +154,9 @@ public class CameraMovement : MonoBehaviour
 
             if (this.doFollowX)
             {
-                if (position.x < player.transform.position.x - 10f || position.x > player.transform.position.x + 10f)
+                if (position.x < GetPlayer().transform.position.x - 10f || position.x > GetPlayer().transform.position.x + 10f)
                 {
-                    this.body.position = new Vector2(player.transform.position.x, body.position.y);
+                    this.body.position = new Vector2(GetPlayer().transform.position.x, body.position.y);
                 }
             }
         }
@@ -159,9 +164,9 @@ public class CameraMovement : MonoBehaviour
         {
             if (doFollowY)
             {
-                if (player.transform.position.y > 0)
+                if (GetPlayer().transform.position.y > 0)
                 {
-                    gameObject.transform.position = new Vector3(gameObject.transform.position.x, player.transform.position.y, gameObject.transform.position.z);
+                    gameObject.transform.position = new Vector3(gameObject.transform.position.x, GetPlayer().transform.position.y, gameObject.transform.position.z);
                 }
             }
         }
@@ -176,8 +181,10 @@ public class CameraMovement : MonoBehaviour
         this.doFollowY = follow;
     }
 
-    public void SearchAgainForPlayer() {
+    public GameObject GetPlayer() {
+        if (this.player != null) return player;
         player = GameObject.FindGameObjectWithTag("Player");
+        return player;
     }
 
     public void DoFollowX(bool follow = true)
